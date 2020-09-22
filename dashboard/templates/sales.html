@@ -1,0 +1,189 @@
+{% extends "layout.html" %}
+{% block content %}
+
+<!-- Begin Page Content -->
+<div class="container-fluid">
+
+  <!-- Page Heading -->
+  <!-- <a href="#" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm"><i
+              class="fas fa-download fa-sm text-white-50"></i> Generate Report</a> -->
+  <!-- <p class="mb-4">DataTables is a third party plugin that is used to generate the demo table below. For more
+            information about DataTables, please visit the <a target="_blank" href="https://datatables.net">official
+              DataTables documentation</a>.</p> -->
+
+  <!-- DataTales Example -->
+  <div class="card shadow mb-4">
+    <div class="card-header py-3">
+      <button id="btnExportToCsv" onclick="exportTableToCSV('sales.csv');" type="button" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm">Export to CSV</button>
+      <!-- <a href="#" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm" data-toggle="modal"
+        data-target="#insertModal"><i class="fas fa-plus fa-sm text-white-50"></i> Add Sale Transaction</a> -->
+    </div>
+    <div class="card-body">
+      <div class="table-responsive">
+        <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+          <thead>
+            <tr>
+              <th>Id</th>
+              <th>Document Number</th>
+              <th>Business Name</th>
+              <th>Amount</th>
+              <th>Paid</th>
+              <th>Remain</th>
+              <th>Payment Date</th>
+              <th>User</th>
+              <th>CreatedAt</th>
+              <th>Action</th>
+            </tr>
+          </thead>
+
+          <tbody>
+            {% for item in SalesItems %}
+            <tr>
+              <td> {{ item.IdSale }} </td>
+              <td>S{{ item.DocumentNumber 	}}</td>
+              {%if item.business.BusinesName %}
+              <td>{{ item.business.BusinesName }}</td>
+              {% else %}
+              <td>{{ item.PhoneNumber }}</td>
+              {% endif %}
+              <td>{{ item.Price * item.Amount }} NGN</td>
+              <td>{{ item.PaidAmount }} NGN</td>
+              {% if (item.Price * item.Amount) -  item.PaidAmount  == 0 %}
+              <td style="background-color: green; color: white;">{{ (item.Price * item.Amount) -  item.PaidAmount }} NGN</td>
+              {% else %}
+              <td style="background-color: red; color: white;">{{ (item.Price * item.Amount) -  item.PaidAmount }} NGN</td>
+              {% endif %}
+              <td>{{ item.PaymentDate }}</td>
+              <td>{{ item.user.FirstName }}</td>
+              <td>{{ item.CreatedAt }}</td>
+              <td>
+                <a href="#" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm" data-toggle="modal"
+                  data-target="#editModal{{ item.IdSale }}"><i class="fas fa-edit fa-sm text-white-50"></i>
+                  Insert Payment </a>
+                <!-- <a href="#" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm" data-toggle="modal"
+                  data-target="#deleteModal{{ item.IdSale }}"><i class="fas fa-trash-alt fa-sm text-white-50"></i>
+                  Delete </a> -->
+              </td>
+            </tr>
+
+
+            <!-- edit Modal-->
+            <div class="modal fade" id="editModal{{ item.IdSale }}" tabindex="-1" role="dialog"
+              aria-labelledby="exampleModalLabel" aria-hidden="true">
+              <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                  <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Insert Sale Payment</h5>
+                    <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                      <span aria-hidden="true">×</span>
+                    </button>
+                  </div>
+                  <div class="modal-body">
+                    <form action="{{url_for('sale.edit_sale', IdSale = item.IdSale )}}" method="POST">
+                      <!-- <div class="form-row">
+                        <div class="form-group col-md-12">
+                          <label for="exampleFormControlSelect1">Choose Business :</label>
+                          <select class="form-control" id="exampleFormControlSelect1" name="BusinesName">
+                            {% for item in BusinesaItems %}
+                            <option value="{{ item.IdBusines }}">{{ item.BusinesName }}</option>
+                            {% endfor %}
+                          </select>
+                        </div>
+                      </div> -->
+                      <div class="form-group">
+                        <label for="inputAddress">Paid Amount :</label>
+                        <input type="text" class="form-control" id="inputAddress" value="{{ item.PaidAmount  }}" name="PaidAmount">
+                      </div>
+                      <div class="form-group">
+                        <label for="inputAddress2">Payment Date :</label>
+                        <input type="date" class="form-control" id="inputAddress2" value="{{ item.PaymentDate }}" name="PaymentDate">
+                      </div>
+                      <div class="modal-footer">
+                        <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
+                        <button class="btn btn-primary" type="submit">Submit</button>
+                      </div>
+                    </form>
+                  </div>
+                </div>
+              </div>
+              </div>
+
+              <!-- delete Modal-->
+              <div class="modal fade" id="deleteModal{{ item.IdSale }}" tabindex="-1" role="dialog"
+                aria-labelledby="exampleModalLabel" aria-hidden="true">
+                <div class="modal-dialog" role="document">
+                  <div class="modal-content">
+                    <div class="modal-header">
+                      <h5 class="modal-title" id="exampleModalLabel">Delete Sale Transaction</h5>
+                      <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">×</span>
+                      </button>
+                    </div>
+                    <div class="modal-body">Are you sure you want to delete {{ item.DocumentNumber }} ?</div>
+                    <div class="modal-footer">
+                      <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
+                      <a class="btn btn-primary"
+                        href="{{url_for('sale.delete_sale', IdSale = item.IdSale )}}">Delete</a>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+</div>
+<!-- /.container-fluid -->
+
+</div>
+<!-- End of Main Content -->
+
+
+<!-- Scroll to Top Button-->
+<a class="scroll-to-top rounded" href="#page-top">
+  <i class="fas fa-angle-up"></i>
+</a>
+
+<!-- insert Modal-->
+<div class="modal fade" id="insertModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+  aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Insert Sale Transaction</h5>
+        <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">×</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form action="{{url_for('sale.add_sale')}}" method="POST">
+          <div class="form-row">
+            <div class="form-group col-md-12">
+              <label for="exampleFormControlSelect1">Choose Business :</label>
+              <select class="form-control" id="exampleFormControlSelect1" name="BusinesName">
+                {% for item in BusinesaItems %}
+                <option value="{{ item.IdBusines }}">{{ item.BusinesName }}</option>
+                {% endfor %}
+              </select>
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="inputAddress">Paid Amount :</label>
+            <input type="text" class="form-control" id="inputAddress" placeholder="Paid Amount" name="Paid">
+          </div>
+          <div class="form-group">
+            <label for="inputAddress2">Payment Date :</label>
+            <input type="date" class="form-control" id="inputAddress2" name="PaymentDate">
+          </div>
+          <div class="modal-footer">
+            <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
+            <button class="btn btn-primary" type="submit">Submit</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+  {% endblock content %}

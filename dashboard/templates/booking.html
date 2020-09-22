@@ -1,0 +1,286 @@
+{% extends "layout.html" %}
+{% block content %}
+
+<!-- Begin Page Content -->
+<div class="container-fluid">
+
+  <!-- Page Heading -->
+  <!-- <a href="#" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm"><i
+              class="fas fa-download fa-sm text-white-50"></i> Generate Report</a> -->
+  <!-- <p class="mb-4">DataTables is a third party plugin that is used to generate the demo table below. For more
+            information about DataTables, please visit the <a target="_blank" href="https://datatables.net">official
+              DataTables documentation</a>.</p> -->
+
+  <!-- DataTales Example -->
+  <div class="card shadow mb-4">
+    <div class="card-header py-3">
+      <a href="#" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm" data-toggle="modal"
+        data-target="#insertModal"><i class="fas fa-plus fa-sm text-white-50" ></i> Add Booking</a>
+        <button id="btnExportToCsv" onclick="exportTableToCSV('booking.csv');" type="button" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm">Export to CSV</button>
+    </div>
+    <div class="card-body">
+      <div class="table-responsive">
+        <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+          <thead>
+            <tr>
+              <th>Id</th>
+              <th>Booking Number</th>
+              <!-- <th>Business Name</th> -->
+              <th>Guest Name</th>
+              <th>Phone Number</th>
+              <th>Organization Name</th>
+              <th>Hall Name</th>
+              <th>Booking Price</th>
+              <th>Booking Date</th>
+              <th>Status</th>
+              <th>User</th>
+              <th>CreatedAt</th>
+              <th>Action</th>
+            </tr>
+          </thead>
+          <!-- <tfoot>
+                        <tr>
+                          <th>Id</th>
+                          <th>Name</th>
+                          <th>Status</th>
+                          <th>Action</th>
+                        </tr>
+                      </tfoot> -->
+          <tbody>
+            {% for item in BookingItems %}
+            <tr>
+              <td> {{ item.IdBooking }} </td>
+              <td> {{ item.BookingNumber }} </td>
+              <td> {{ item.Poc }} </td>
+              <td> {{ item.PhoneNumber }} </td>
+              <td>{{ item.OrganizationName }}</td>
+              <td>{{ item.hall.Name }}</td>
+              <td>{{ item.Price }} SDG</td>
+              <td>{{ item.Bookingtime }}</td>
+              {% if  item.bookingstatus.BookingStatus == 'Confirmed' %}
+              <td style="background-color: #7d0633; color: white;">{{ item.bookingstatus.BookingStatus }}</td>
+              {% else %}
+              <td style="background-color: #206a5d; color: white;">{{ item.bookingstatus.BookingStatus }}</td>
+              {% endif %}
+              <td>{{ item.user.FirstName }}</td>
+              <td>{{ item.CreatedAt }}</td>
+              <td>
+                <a href="#" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm" data-toggle="modal"
+                  data-target="#editModal{{ item.IdBooking }}"><i class="fas fa-edit fa-sm text-white-50"></i>
+                  Edit </a>
+                <a href="#" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm" data-toggle="modal"
+                  data-target="#editStatusModal{{ item.IdBooking }}"><i class="fas fa-edit fa-sm text-white-50"></i>
+                  Edit Status </a>
+                <a href="#" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm" data-toggle="modal"
+                  data-target="#deleteModal{{ item.IdBooking }}"><i class="fas fa-trash-alt fa-sm text-white-50"></i>
+                  Delete </a>
+              </td>
+            </tr>
+
+            <!-- edit Modal-->
+            <div class="modal fade" id="editModal{{ item.IdBooking }}" tabindex="-1" role="dialog"
+              aria-labelledby="exampleModalLabel" aria-hidden="true">
+              <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                  <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Edit Booking</h5>
+                    <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                      <span aria-hidden="true">×</span>
+                    </button>
+                  </div>
+                  <div class="modal-body">
+                    <form action="{{url_for('booking.edit_booking', IdBooking = item.IdBooking )}}" method="POST">
+                      <div class="form-row">
+                        <div class="form-group col-md-12">
+                          <label for="exampleFormControlSelect1">Organization Name :</label>
+                          <input type="text" class="form-control" id="inputAddress" value="{{ item.OrganizationName }}" name="OrganizationName">
+                        </div>
+                      </div>
+                      <div class="form-row">
+                        <div class="form-group col-md-12">
+                          <label for="exampleFormControlSelect1">Point of Contact :</label>
+                          <input type="text" class="form-control" id="inputAddress" value="{{ item.Poc }}" name="poc">
+                        </div>
+                      </div>
+                      <div class="form-row">
+                        <div class="form-group col-md-12">
+                          <label for="exampleFormControlSelect1">Phone Number :</label>
+                          <input type="text" class="form-control" id="inputAddress" value="{{ item.PhoneNumber }}" name="phonenumbers">
+                        </div>
+                      </div>
+                      <div class="form-group">
+                        <label for="exampleFormControlSelect1">Choose Hall :</label>
+                        <select class="form-control" id="exampleFormControlSelect1" name="Hall">
+                          {% for hall in HallItems %}
+                          <option value="{{ hall.IdHall }}">{{ hall.Name }}</option>
+                          {% endfor %}
+                        </select>
+                      </div>
+                      <div class="form-group">
+                        <label for="exampleFormControlSelect1">Choose Booking Status :</label>
+                        <select class="form-control" id="exampleFormControlSelect1" name="BookingStatus">
+                          {% for status in BookingStatusItems %}
+                          <option value="{{ status.IdBookingStatus }}">{{ status.BookingStatus }}</option>
+                          {% endfor %}
+                        </select>
+                      </div>
+                      <div class="form-group">
+                        <label for="inputAddress">Price :</label>
+                        <input type="text" class="form-control" id="inputAddress" value="{{ item.Price }}" name="Price">
+                      </div>
+                      <div class="form-group">
+                        <label for="inputAddress2">Booking Date :</label>
+                        <input type="date" class="form-control" id="inputAddress2" value="{{ item.Bookingtime }}" name="Bookingtime">
+                      </div>
+                  </div>
+                  <div class="modal-footer">
+                    <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
+                    <button class="btn btn-primary" type="submit">Submit</button>
+                  </div>
+                  </form>
+                </div>
+              </div>
+            </div>
+
+
+            <!-- edit Modal-->
+            <div class="modal fade" id="editStatusModal{{ item.IdBooking }}" tabindex="-1" role="dialog"
+              aria-labelledby="exampleModalLabel" aria-hidden="true">
+              <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                  <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Edit Booking</h5>
+                    <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                      <span aria-hidden="true">×</span>
+                    </button>
+                  </div>
+                  <div class="modal-body">
+                    <form action="{{url_for('booking.edit_status_booking', IdBooking = item.IdBooking )}}" method="POST">
+                      <div class="form-group">
+                        <label for="exampleFormControlSelect1">Edit Status :</label>
+                        <select class="form-control" id="exampleFormControlSelect1" name="BookingStatusName">
+                          {% for item in BookingStatusItems %}
+                          <option value="{{ item.IdBookingStatus }}">{{ item.BookingStatus }}</option>
+                          {% endfor %}
+                        </select>
+                      </div>
+                  </div>
+                  <div class="modal-footer">
+                    <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
+                    <button class="btn btn-primary" type="submit">Submit</button>
+                  </div>
+                  </form>
+                </div>
+              </div>
+            </div>
+
+
+
+
+
+            <!-- delete Modal-->
+            <div class="modal fade" id="deleteModal{{ item.IdBooking }}" tabindex="-1" role="dialog"
+              aria-labelledby="exampleModalLabel" aria-hidden="true">
+              <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                  <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Delete Booking</h5>
+                    <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                      <span aria-hidden="true">×</span>
+                    </button>
+                  </div>
+                  <div class="modal-body">Are you sure you want to delete {{ item.BookingNumber }} ?</div>
+                  <div class="modal-footer">
+                    <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
+                    <a class="btn btn-primary" href="{{url_for('booking.delete_booking', IdBooking = item.IdBooking )}}">Delete</a>
+                  </div>
+                </div>
+              </div>
+            </div>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+</div>
+<!-- /.container-fluid -->
+
+</div>
+<!-- End of Main Content -->
+
+
+<!-- Scroll to Top Button-->
+<a class="scroll-to-top rounded" href="#page-top">
+  <i class="fas fa-angle-up"></i>
+</a>
+
+<!-- insert Modal-->
+<div class="modal fade" id="insertModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+  aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Insert Booking</h5>
+        <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">×</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form action="{{url_for('booking.add_booking')}}" method="POST">
+          <div class="form-row">
+            <div class="form-group col-md-12">
+              <label for="exampleFormControlSelect1">Organization Name :</label>
+              <input type="text" class="form-control" id="inputAddress" name="OrganizationName">
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="form-group col-md-12">
+              <label for="exampleFormControlSelect1">Point of Contact :</label>
+              <input type="text" class="form-control" id="inputAddress" name="poc">
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="form-group col-md-12">
+              <label for="exampleFormControlSelect1">Phone Number :</label>
+              <input type="text" class="form-control" id="inputAddress" name="phonenumbers">
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="exampleFormControlSelect1">Choose Hall :</label>
+            <select class="form-control" id="exampleFormControlSelect1" name="Hall">
+              {% for hall in HallItems %}
+              <option value="{{ hall.IdHall }}">{{ hall.Name }}</option>
+              {% endfor %}
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="exampleFormControlSelect1">Choose Booking Status :</label>
+            <select class="form-control" id="exampleFormControlSelect1" name="BookingStatus">
+              {% for status in BookingStatusItems %}
+              <option value="{{ status.IdBookingStatus }}">{{ status.BookingStatus }}</option>
+              {% endfor %}
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="inputAddress">Price :</label>
+            <input type="text" class="form-control" id="inputAddress" placeholder="Insert Price" name="Price">
+          </div>
+          <div class="form-group">
+            <label for="inputAddress2">Booking Date :</label>
+            <input type="date" class="form-control" id="inputAddress2" name="Bookingtime">
+          </div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
+        <button class="btn btn-primary" type="submit">Submit</button>
+      </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+
+{% endblock content %}
+
