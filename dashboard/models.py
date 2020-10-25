@@ -8,16 +8,17 @@ def load_user(IdUser):
 
 
 
-class Hall(db.Model):
-    IdHall = db.Column(db.Integer, primary_key=True)
-    Name = db.Column(db.String(250), nullable=False)
+class Categories(db.Model):
+    IdCategory = db.Column(db.Integer, primary_key=True)
+    Category  = db.Column(db.String(250), nullable=False)
+    ImageUrl   = db.Column(db.String(250), nullable=False)
     Enabled = db.Column(db.Integer, db.ForeignKey('situation.IdSituation'))
     CreatedAt = db.Column(db.DateTime, nullable=False) 
-    situation = db.relationship('Situation', backref='Market')
+    situation = db.relationship('Situation', backref='Categories')
 
 
     def __repr__(self) :
-        return f"Hall('{self.IdHall}','{self.Name},'{self.Enabled}','{self.CreatedAt}')"
+        return f"Categories('{self.IdCategory}','{self.Category },'{self.Enabled}','{self.CreatedAt}')"
 
 
 
@@ -66,34 +67,32 @@ class Users(db.Model, UserMixin):
 
 
 
-class Booking(db.Model):
-    IdBooking = db.Column(db.Integer, primary_key=True)
-    BookingNumber = db.Column(db.String(250), nullable=True)
-    OrganizationName = db.Column(db.String(250), nullable=True)
-    Poc = db.Column(db.String(250), nullable=True)
-    PhoneNumber = db.Column(db.String(250), nullable=True)
-    IdBookingStatus  = db.Column(db.Integer, db.ForeignKey('booking_status.IdBookingStatus'))
+class Products(db.Model):
+    IdProduct = db.Column(db.Integer, primary_key=True)
+    Name  = db.Column(db.String(250), nullable=True)
+    Description  = db.Column(db.String(250), nullable=True)
+    ImageUrl = db.Column(db.String(250), nullable=True)
+    IdPortion  = db.Column(db.Integer, db.ForeignKey('portion.IdPortion'))
     IdUser = db.Column(db.Integer, db.ForeignKey('users.IdUser'))
-    IdHall = db.Column(db.Integer, db.ForeignKey('hall.IdHall'))
+    IdCategory = db.Column(db.Integer, db.ForeignKey('categories.IdCategory'))
     Price  = db.Column(db.String(250), nullable=True)
-    Bookingtime = db.Column(db.String(250), nullable=True)
     CreatedAt = db.Column(db.DateTime, nullable=False)
-    bookingstatus = db.relationship("BookingStatus", backref="Booking")
-    user = db.relationship('Users',  backref="Booking")
-    hall = db.relationship('Hall',  backref="Booking")
+    portion = db.relationship("Portion", backref="Products")
+    user = db.relationship('Users',  backref="Products")
+    cat = db.relationship('Categories',  backref="Products")
 
 
 
     def __repr__(self) :
-        return f"Booking('{self.IdBooking}',{self.BookingNumber}','{self.OrganizationName}','{self.Poc}','{self.PhoneNumber}','{self.IdBookingStatus}','{self.IdUser}','{self.Price}','{self.Bookingtime}','{self.CreatedAt}')"        
+        return f"Products('{self.IdProduct}',{self.Name}','{self.Description}','{self.ImageUrl}','{self.IdPortion}','{self.IdUser}','{self.IdCategory}','{self.Price}','{self.CreatedAt}')"        
 
-class BookingStatus(db.Model):
-    IdBookingStatus = db.Column(db.Integer, primary_key=True)
-    BookingStatus  = db.Column(db.String(250), nullable=False)
+class Portion(db.Model):
+    IdPortion  = db.Column(db.Integer, primary_key=True)
+    Portion   = db.Column(db.String(250), nullable=False)
     CreatedAt  = db.Column(db.DateTime, nullable=False) 
 
     def __repr__(self) :
-        return f"BookingStatus('{self.IdBookingStatus}','{self.BookingStatus}','{self.CreatedAt}')"
+        return f"Portion('{self.IdPortion }','{self.Portion }','{self.CreatedAt}')"
 
 
 class Situation(db.Model):

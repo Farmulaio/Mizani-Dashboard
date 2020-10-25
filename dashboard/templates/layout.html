@@ -8,7 +8,7 @@
   <meta name="description" content="">
   <meta name="author" content="">
 
-  <title>Nymeria Booking System</title>
+  <title>QR Dashboard</title>
 
   <!-- Custom fonts for this template -->
   <link href="{{url_for('static', filename='vendor/fontawesome-free/css/all.min.css')}}" rel="stylesheet"
@@ -40,9 +40,9 @@
       <!-- Sidebar - Brand -->
       <a class="sidebar-brand d-flex align-items-center justify-content-center" href="{{url_for('main.index')}}" >
         <div class="sidebar-brand-icon rotate-n-15">
-          <img class="btn-circle" src="{{url_for('static', filename='img/eaaw.png')}}" alt="user images">
+          <!-- <img class="btn-circle" src="{{url_for('static', filename='img/eaaw.png')}}" alt="user images"> -->
         </div>
-        <div class="sidebar-brand-text mx-3">Ewa Hotel </div>
+        <div class="sidebar-brand-text mx-3">Qr Product Dashboard </div>
       </a>
 
       <!-- Divider -->
@@ -52,7 +52,7 @@
       <li class="nav-item ">
         <a class="nav-link" href="{{url_for('main.index')}}">
           <i class="fas fa-fw fa-tachometer-alt"></i>
-          <span>Booking System</span></a>
+          <span>QR Dashboard</span></a>
       </li>
 
       <!-- Divider -->
@@ -64,9 +64,9 @@
       </div>
 
       <li class="nav-item">
-        <a class="nav-link" href="{{url_for('booking.get_booking')}}">
+        <a class="nav-link" href="{{url_for('product.get_product')}}">
           <i class="fas fa-fw fa-home"></i>
-          <span>Booking</span></a>
+          <span>Products</span></a>
       </li>
 
  
@@ -87,8 +87,8 @@
         </a>
         <div id="collapsePagesMang" class="collapse" aria-labelledby="headingPages" data-parent="#accordionSidebar">
           <div class="bg-white py-2 collapse-inner rounded">
-            <a class="collapse-item" href="{{url_for('halls.get_halls')}}">Halls</a>
-            <a class="collapse-item" href="{{url_for('booking_status.get_booking_status')}}">Booking status</a>
+            <a class="collapse-item" href="{{url_for('users.get_users')}}">Halls</a>
+            <a class="collapse-item" href="{{url_for('users.get_users')}}">Booking status</a>
             <a class="collapse-item" href="{{url_for('users.get_users')}}">Users</a>
             <a class="collapse-item" href="{{url_for('status.get_situation')}}">Status</a>
           </div>
@@ -233,7 +233,7 @@
                     Spending Alert: We've noticed unusually high spending for your account.
                   </div>
                 </a> -->
-                <a class="dropdown-item text-center small text-gray-500" href="{{url_for('booking.get_booking')}}">Show All Orders</a>
+                <a class="dropdown-item text-center small text-gray-500" >Show All Orders</a>
               </div>
             </li>
 
@@ -302,7 +302,7 @@
               <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-toggle="dropdown"
                 aria-haspopup="true" aria-expanded="false">
                 <span class="mr-2 d-none d-lg-inline text-gray-600 small">{{ current_user.FirstName }} {{ current_user.LastName }}</span>
-                <img class="img-profile rounded-circle" src="{{url_for('static', filename='img/eaaw.png')}}">
+                <!-- <img class="img-profile rounded-circle" src="{{url_for('static', filename='img/eaaw.png')}}"> -->
               </a>
               <!-- Dropdown - User Information -->
               <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in" aria-labelledby="userDropdown">

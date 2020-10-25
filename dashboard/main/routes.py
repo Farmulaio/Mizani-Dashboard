@@ -1,5 +1,5 @@
 from flask_login import login_user, current_user, logout_user, login_required
-from dashboard.models import  Users,Situation, Booking, BookingStatus, Hall
+from dashboard.models import  Users,Situation,Products, Portion, Categories
 from flask import Response, abort, redirect, url_for, render_template, request, jsonify, flash, Markup, Blueprint
 from dashboard import db, bcrypt
 from sqlalchemy import extract
@@ -29,15 +29,10 @@ def login():
 @main.route('/index', methods=['POST', 'GET'])
 @login_required
 def index():
-    totalsale = 0
-    NumberOfHall = db.session.query(Hall).count()
-    ConfirmedBooking = db.session.query(Booking).join(BookingStatus).filter(BookingStatus.BookingStatus == 'Confirmed').count()
-    TentativeBooking = db.session.query(Booking).join(BookingStatus).filter(BookingStatus.BookingStatus == 'Tentative').count()
-    BookingStatisc = [ConfirmedBooking,TentativeBooking]
-    TotalCash = db.session.query(Booking.Price).all()
-    for j in TotalCash:
-        totalsale += j[0]
-    return render_template('index.html', NumberOfHall = NumberOfHall, ConfirmedBooking = ConfirmedBooking, TentativeBooking = TentativeBooking, totalsale = totalsale, BookingStatisc = BookingStatisc)
+    NumberProducts = db.session.query(Products).count()
+    NumberofCategories = db.session.query(Categories).count()
+
+    return render_template('index.html', NumberProducts = NumberProducts, NumberofCategories = NumberofCategories)
 
 # logout route
 @main.route('/logout')

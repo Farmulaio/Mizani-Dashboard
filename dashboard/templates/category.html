@@ -1,5 +1,6 @@
 {% extends "layout.html" %}
 {% block content %}
+<!-- End of Topbar -->
 
 <!-- Begin Page Content -->
 <div class="container-fluid">
@@ -15,7 +16,7 @@
   <div class="card shadow mb-4">
     <div class="card-header py-3">
       <a href="#" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm" data-toggle="modal"
-        data-target="#insertModal"><i class="fas fa-plus fa-sm text-white-50"></i> Add Status</a>
+        data-target="#insertModal"><i class="fas fa-plus fa-sm text-white-50"></i> Add Category</a>
     </div>
     <div class="card-body">
       <div class="table-responsive">
@@ -23,6 +24,7 @@
           <thead>
             <tr>
               <th>Id</th>
+              <th>Name</th>
               <th>Status</th>
               <th>CreatedAt</th>
               <th>Action</th>
@@ -37,47 +39,53 @@
                     </tr>
                   </tfoot> -->
           <tbody>
-            {% for item in BookingStatusItems %}
+            {% for item in CategoryItems %}
             <tr>
-              <td>{{ item.IdBookingStatus }}</td>
-              <td>{{ item.BookingStatus }}</td>
+              <td>{{ item.IdCategory }}</td>
+              <td>{{ item.Name }}</td>
+              <td>{{ item.situation.Situation }}</td>
               <td>{{ item.CreatedAt }}</td>
               <td>
                 <a href="#" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm" data-toggle="modal"
-                  data-target="#editModal{{ item.IdBookingStatus }}"><i class="fas fa-edit fa-sm text-white-50"></i>
+                  data-target="#editModal{{ item.IdCategory }}"><i class="fas fa-edit fa-sm text-white-50"></i>
                   Edit </a>
                 <a href="#" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm" data-toggle="modal"
-                  data-target="#deleteModal{{ item.IdBookingStatus }}"><i class="fas fa-trash-alt fa-sm text-white-50"></i>
-                  Delete
-                </a>
+                  data-target="#deleteModal{{ item.IdCategory }}"><i class="fas fa-trash-alt fa-sm text-white-50"></i>
+                  Delete </a>
               </td>
             </tr>
 
-
             <!-- edit Modal-->
-            <div class="modal fade" id="editModal{{ item.IdBookingStatus }}" tabindex="-1" role="dialog"
+            <div class="modal fade" id="editModal{{ item.IdCategory }}" tabindex="-1" role="dialog"
               aria-labelledby="exampleModalLabel" aria-hidden="true">
               <div class="modal-dialog" role="document">
                 <div class="modal-content">
                   <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLabel">Edit Status</h5>
+                    <h5 class="modal-title" id="exampleModalLabel">Edit Category</h5>
                     <button class="close" type="button" data-dismiss="modal" aria-label="Close">
                       <span aria-hidden="true">×</span>
                     </button>
                   </div>
                   <div class="modal-body">
-                    <form action="{{url_for('booking_status.edit_booking_status', IdBookingStatus = item.IdBookingStatus )}}" method="POST">
+                    <form action="{{url_for('category.edit_category', IdCategory = item.IdCategory )}}" method="POST">
                       <div class="row">
                         <div class="col">
-                          <label for="exampleFormControlSelect1">Insert Status :</label>
-                          <input type="text" class="form-control" value="{{ item.BookingStatus }}"
-                            name="BookingStatusName">
+                          <label for="exampleFormControlSelect1">Insert Category :</label>
+                          <input type="text" class="form-control" value="{{ item.Name }}"  name="CategoryName">
+                        </div>
+                        <div class="col">
+                          <label for="exampleFormControlSelect1">Choose status :</label>
+                          <select id="inputState" class="form-control" name="Status">
+                            {% for item in SituationItems %}
+                            <option value="{{ item.IdSituation }}">{{ item.Situation }}</option>
+                            {% endfor %}
+                          </select>
                         </div>
                       </div>
                   </div>
                   <div class="modal-footer">
                     <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
-                    <button class="btn btn-primary" type="submit">Submit</button>
+                    <button class="btn btn-primary" type="submit">Edit</button>
                   </div>
                   </form>
                 </div>
@@ -85,26 +93,27 @@
             </div>
 
 
+
             <!-- delete Modal-->
-            <div class="modal fade" id="deleteModal{{ item.IdBookingStatus }}" tabindex="-1" role="dialog"
+            <div class="modal fade" id="deleteModal{{ item.IdCategory }}" tabindex="-1" role="dialog"
               aria-labelledby="exampleModalLabel" aria-hidden="true">
               <div class="modal-dialog" role="document">
                 <div class="modal-content">
                   <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLabel">Delete Status</h5>
+                    <h5 class="modal-title" id="exampleModalLabel">Delete Category</h5>
                     <button class="close" type="button" data-dismiss="modal" aria-label="Close">
                       <span aria-hidden="true">×</span>
                     </button>
                   </div>
-                  <div class="modal-body">Are you sure you want to delete {{ item.BookingStatus }} ?</div>
+                  <div class="modal-body">Are you sure you want to delete {{ item.Name }} ?</div>
                   <div class="modal-footer">
                     <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
-                    <a class="btn btn-primary"
-                      href="{{url_for('booking_status.delete_booking_status', IdBookingStatus = item.IdBookingStatus )}}">Delete</a>
+                    <a class="btn btn-primary" href="{{url_for('category.delete_category', IdCategory = item.IdCategory)}}">Delete</a>
                   </div>
                 </div>
               </div>
             </div>
+
             {% endfor %}
           </tbody>
         </table>
@@ -116,17 +125,11 @@
 <!-- /.container-fluid -->
 
 </div>
-<!-- End of Main Content -->
-
-<!-- Footer -->
-
-<!-- End of Footer -->
 
 <!-- Scroll to Top Button-->
 <a class="scroll-to-top rounded" href="#page-top">
   <i class="fas fa-angle-up"></i>
 </a>
-
 
 <!-- insert Modal-->
 <div class="modal fade" id="insertModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
@@ -134,17 +137,26 @@
   <div class="modal-dialog" role="document">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title" id="exampleModalLabel">Insert Status</h5>
+        <h5 class="modal-title" id="exampleModalLabel">Insert Category</h5>
         <button class="close" type="button" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">×</span>
         </button>
       </div>
       <div class="modal-body">
-        <form action="{{url_for('booking_status.add_booking_status')}}" method="POST">
+        <form action="{{ url_for('category.add_category')}}" method="POST">
           <div class="row">
             <div class="col">
-              <label for="exampleFormControlSelect1">Insert Status :</label>
-              <input type="text" class="form-control" placeholder="Status name" name="BookingStatusName">
+              <label for="exampleFormControlSelect1">Insert Category :</label>
+              <input type="text" class="form-control" placeholder="Category name" name="CategoryName">
+            </div>
+            <div class="col">
+              <label for="exampleFormControlSelect1">Choose status :</label>
+              <select id="inputState" class="form-control" name="Status">
+                <option selected>Choose...</option>
+                {% for item in SituationItems %}
+                <option value="{{ item.IdSituation }}">{{ item.Situation }}</option>
+                {% endfor %}
+              </select>
             </div>
           </div>
       </div>
@@ -156,4 +168,5 @@
     </div>
   </div>
 </div>
+
 {% endblock content %}

@@ -15,8 +15,8 @@
   <div class="card shadow mb-4">
     <div class="card-header py-3">
       <a href="#" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm" data-toggle="modal"
-        data-target="#insertModal"><i class="fas fa-plus fa-sm text-white-50" ></i> Add Booking</a>
-        <button id="btnExportToCsv" onclick="exportTableToCSV('booking.csv');" type="button" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm">Export to CSV</button>
+        data-target="#insertModal"><i class="fas fa-plus fa-sm text-white-50" ></i> Add Product</a>
+        <button id="btnExportToCsv" onclick="exportTableToCSV('product.csv');" type="button" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm">Export to CSV</button>
     </div>
     <div class="card-body">
       <div class="table-responsive">
@@ -24,15 +24,12 @@
           <thead>
             <tr>
               <th>Id</th>
-              <th>Booking Number</th>
+              <th>Product Name</th>
               <!-- <th>Business Name</th> -->
-              <th>Guest Name</th>
-              <th>Phone Number</th>
-              <th>Organization Name</th>
-              <th>Hall Name</th>
-              <th>Booking Price</th>
-              <th>Booking Date</th>
-              <th>Status</th>
+              <th>Category</th>
+              <th>Description</th>
+              <th>Portion</th>
+              <th>Price</th>
               <th>User</th>
               <th>CreatedAt</th>
               <th>Action</th>
@@ -47,38 +44,31 @@
                         </tr>
                       </tfoot> -->
           <tbody>
-            {% for item in BookingItems %}
+            {% for item in ProductsItems %}
             <tr>
-              <td> {{ item.IdBooking }} </td>
-              <td> {{ item.BookingNumber }} </td>
-              <td> {{ item.Poc }} </td>
-              <td> {{ item.PhoneNumber }} </td>
-              <td>{{ item.OrganizationName }}</td>
-              <td>{{ item.hall.Name }}</td>
+              <td> {{ item.IdProduct }} </td>
+              <td> {{ item.Name }} </td>
+              <td> {{ item.IdCategory }} </td>
+              <td> {{ item.Description }} </td>
+              <td> {{ item.IdPortion }} </td>
               <td>{{ item.Price }} SDG</td>
-              <td>{{ item.Bookingtime }}</td>
-              {% if  item.bookingstatus.BookingStatus == 'Confirmed' %}
-              <td style="background-color: #7d0633; color: white;">{{ item.bookingstatus.BookingStatus }}</td>
-              {% else %}
-              <td style="background-color: #206a5d; color: white;">{{ item.bookingstatus.BookingStatus }}</td>
-              {% endif %}
               <td>{{ item.user.FirstName }}</td>
               <td>{{ item.CreatedAt }}</td>
               <td>
                 <a href="#" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm" data-toggle="modal"
-                  data-target="#editModal{{ item.IdBooking }}"><i class="fas fa-edit fa-sm text-white-50"></i>
+                  data-target="#editModal{{ item.IdProduct }}"><i class="fas fa-edit fa-sm text-white-50"></i>
                   Edit </a>
                 <a href="#" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm" data-toggle="modal"
-                  data-target="#editStatusModal{{ item.IdBooking }}"><i class="fas fa-edit fa-sm text-white-50"></i>
+                  data-target="#editStatusModal{{ item.IdProduct }}"><i class="fas fa-edit fa-sm text-white-50"></i>
                   Edit Status </a>
                 <a href="#" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm" data-toggle="modal"
-                  data-target="#deleteModal{{ item.IdBooking }}"><i class="fas fa-trash-alt fa-sm text-white-50"></i>
+                  data-target="#deleteModal{{ item.IdProduct }}"><i class="fas fa-trash-alt fa-sm text-white-50"></i>
                   Delete </a>
               </td>
             </tr>
 
             <!-- edit Modal-->
-            <div class="modal fade" id="editModal{{ item.IdBooking }}" tabindex="-1" role="dialog"
+            <div class="modal fade" id="editModal{{ item.IdProduct }}" tabindex="-1" role="dialog"
               aria-labelledby="exampleModalLabel" aria-hidden="true">
               <div class="modal-dialog" role="document">
                 <div class="modal-content">
@@ -89,7 +79,7 @@
                     </button>
                   </div>
                   <div class="modal-body">
-                    <form action="{{url_for('booking.edit_booking', IdBooking = item.IdBooking )}}" method="POST">
+                    <form action="{{url_for('product.edit_product', IdProduct = item.IdProduct )}}" method="POST">
                       <div class="form-row">
                         <div class="form-group col-md-12">
                           <label for="exampleFormControlSelect1">Organization Name :</label>
@@ -144,7 +134,7 @@
 
 
             <!-- edit Modal-->
-            <div class="modal fade" id="editStatusModal{{ item.IdBooking }}" tabindex="-1" role="dialog"
+            <div class="modal fade" id="editStatusModal{{ item.IdProduct }}" tabindex="-1" role="dialog"
               aria-labelledby="exampleModalLabel" aria-hidden="true">
               <div class="modal-dialog" role="document">
                 <div class="modal-content">
@@ -155,7 +145,7 @@
                     </button>
                   </div>
                   <div class="modal-body">
-                    <form action="{{url_for('booking.edit_status_booking', IdBooking = item.IdBooking )}}" method="POST">
+                    <form action="{{url_for('product.edit_status_product', IdProduct = item.IdProduct )}}" method="POST">
                       <div class="form-group">
                         <label for="exampleFormControlSelect1">Edit Status :</label>
                         <select class="form-control" id="exampleFormControlSelect1" name="BookingStatusName">
@@ -179,7 +169,7 @@
 
 
             <!-- delete Modal-->
-            <div class="modal fade" id="deleteModal{{ item.IdBooking }}" tabindex="-1" role="dialog"
+            <div class="modal fade" id="deleteModal{{ item.IdProduct }}" tabindex="-1" role="dialog"
               aria-labelledby="exampleModalLabel" aria-hidden="true">
               <div class="modal-dialog" role="document">
                 <div class="modal-content">
@@ -192,7 +182,7 @@
                   <div class="modal-body">Are you sure you want to delete {{ item.BookingNumber }} ?</div>
                   <div class="modal-footer">
                     <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
-                    <a class="btn btn-primary" href="{{url_for('booking.delete_booking', IdBooking = item.IdBooking )}}">Delete</a>
+                    <a class="btn btn-primary" href="{{url_for('product.delete_product', IdProduct = item.IdProduct )}}">Delete</a>
                   </div>
                 </div>
               </div>
@@ -228,7 +218,7 @@
         </button>
       </div>
       <div class="modal-body">
-        <form action="{{url_for('booking.add_booking')}}" method="POST">
+        <form action="{{url_for('product.add_product')}}" method="POST">
           <div class="form-row">
             <div class="form-group col-md-12">
               <label for="exampleFormControlSelect1">Organization Name :</label>

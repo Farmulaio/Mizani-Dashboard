@@ -22,20 +22,18 @@ def create_app(config_class=Config):
     bcrypt.init_app(app)
     login_manager.init_app(app)
 
-    from dashboard.halls.routes import halls
+    from dashboard.category.routes import category
     from dashboard.role.routes import role
     from dashboard.users.routes import users
+    from dashboard.product.routes import product
     from dashboard.status.routes import status
-    from dashboard.booking.routes import booking
-    from dashboard.booking_status.routes import booking_status
     from dashboard.main.routes import main 
 
     # from dashboard import routes
-    app.register_blueprint(halls)
+    app.register_blueprint(category)
     app.register_blueprint(users)
     app.register_blueprint(status)
-    app.register_blueprint(booking)
-    app.register_blueprint(booking_status)
+    app.register_blueprint(product)
     app.register_blueprint(main)
 
     return app
