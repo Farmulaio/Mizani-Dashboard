@@ -23,7 +23,7 @@ def get_category():
 @login_required
 def add_category():
     if request.method == 'POST':
-        NewCategory = Categories(Name = request.form['CategoryName'], Enabled= request.form['Status'])
+        NewCategory = Categories(Category = request.form['CategoryName'], Enabled= request.form['Status'])
         try :
             db.session.add(NewCategory)
             db.session.commit()
@@ -31,7 +31,7 @@ def add_category():
             return redirect(url_for('category.get_category'))
         except Exception as err :
             flash('No !! ' + Sad + ' Category did not insert successfully . Please check insertion ' , 'danger')
-
+            print(err)
     return redirect(url_for('category.get_category'))
 
 # edit category
@@ -40,7 +40,7 @@ def add_category():
 def edit_category(IdCategory):
     if request.method == 'POST':
         EditCategory = db.session.query(Categories).filter_by(IdCategory = IdCategory).one()
-        EditCategory.Name = request.form['CategoryName']
+        EditCategory.Category = request.form['CategoryName']
         EditCategory.Enabled = request.form['Status']
         try :
             db.session.add(EditCategory)
@@ -65,5 +65,5 @@ def delete_category(IdCategory):
             return redirect(url_for('category.get_category'))
         except Exception as err :
             flash('NA NA NA you can delete me. Try again ' + Sassy  , 'danger')
- 
+            print(err)
     return redirect(url_for('category.get_category'))

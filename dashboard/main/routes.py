@@ -1,5 +1,5 @@
 from flask_login import login_user, current_user, logout_user, login_required
-from dashboard.models import  Users,Situation,Products, Portion, Categories
+from dashboard.models import  Users,Situation,Products, Size, Categories
 from flask import Response, abort, redirect, url_for, render_template, request, jsonify, flash, Markup, Blueprint
 from dashboard import db, bcrypt
 from sqlalchemy import extract

@@ -15,7 +15,7 @@
   <div class="card shadow mb-4">
     <div class="card-header py-3">
       <a href="#" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm" data-toggle="modal"
-        data-target="#insertModal"><i class="fas fa-plus fa-sm text-white-50"></i> Add Status</a>
+        data-target="#insertModal"><i class="fas fa-plus fa-sm text-white-50"></i> Add Size</a>
     </div>
     <div class="card-body">
       <div class="table-responsive">
@@ -23,6 +23,7 @@
           <thead>
             <tr>
               <th>Id</th>
+              <th>Size</th>
               <th>Status</th>
               <th>CreatedAt</th>
               <th>Action</th>
@@ -37,17 +38,18 @@
                     </tr>
                   </tfoot> -->
           <tbody>
-            {% for item in PortionItems %}
+            {% for item in SizeItems %}
             <tr>
-              <td>{{ item.IdPortion }}</td>
-              <td>{{ item.BookingStatus }}</td>
+              <td>{{ item.IdSize }}</td>
+              <td>{{ item.Size }}</td>
+              <td>{{ item.situation.Situation }}</td>
               <td>{{ item.CreatedAt }}</td>
               <td>
                 <a href="#" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm" data-toggle="modal"
-                  data-target="#editModal{{ item.IdPortion }}"><i class="fas fa-edit fa-sm text-white-50"></i>
+                  data-target="#editModal{{ item.IdSize }}"><i class="fas fa-edit fa-sm text-white-50"></i>
                   Edit </a>
                 <a href="#" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm" data-toggle="modal"
-                  data-target="#deleteModal{{ item.IdPortion }}"><i class="fas fa-trash-alt fa-sm text-white-50"></i>
+                  data-target="#deleteModal{{ item.IdSize }}"><i class="fas fa-trash-alt fa-sm text-white-50"></i>
                   Delete
                 </a>
               </td>
@@ -55,23 +57,31 @@
 
 
             <!-- edit Modal-->
-            <div class="modal fade" id="editModal{{ item.IdPortion }}" tabindex="-1" role="dialog"
+            <div class="modal fade" id="editModal{{ item.IdSize }}" tabindex="-1" role="dialog"
               aria-labelledby="exampleModalLabel" aria-hidden="true">
               <div class="modal-dialog" role="document">
                 <div class="modal-content">
                   <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLabel">Edit Status</h5>
+                    <h5 class="modal-title" id="exampleModalLabel">Edit Size</h5>
                     <button class="close" type="button" data-dismiss="modal" aria-label="Close">
                       <span aria-hidden="true">×</span>
                     </button>
                   </div>
                   <div class="modal-body">
-                    <form action="{{url_for('portion.edit_portion', IdPortion = item.IdPortion )}}" method="POST">
+                    <form action="{{url_for('size.edit_size', IdSize = item.IdSize )}}" method="POST">
                       <div class="row">
                         <div class="col">
-                          <label for="exampleFormControlSelect1">Insert Status :</label>
-                          <input type="text" class="form-control" value="{{ item.BookingStatus }}"
-                            name="BookingStatusName">
+                          <label for="exampleFormControlSelect1">Insert Size :</label>
+                          <input type="text" class="form-control" value="{{ item.Size }}"
+                            name="Size">
+                        </div>
+                        <div class="col">
+                          <label for="exampleFormControlSelect1">Choose status :</label>
+                          <select id="inputState" class="form-control" name="Status">
+                            {% for item in SituationItems %}
+                            <option value="{{ item.IdSituation }}">{{ item.Situation }}</option>
+                            {% endfor %}
+                          </select>
                         </div>
                       </div>
                   </div>
@@ -86,21 +96,21 @@
 
 
             <!-- delete Modal-->
-            <div class="modal fade" id="deleteModal{{ item.IdPortion }}" tabindex="-1" role="dialog"
+            <div class="modal fade" id="deleteModal{{ item.IdSize }}" tabindex="-1" role="dialog"
               aria-labelledby="exampleModalLabel" aria-hidden="true">
               <div class="modal-dialog" role="document">
                 <div class="modal-content">
                   <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLabel">Delete Status</h5>
+                    <h5 class="modal-title" id="exampleModalLabel">Delete Size</h5>
                     <button class="close" type="button" data-dismiss="modal" aria-label="Close">
                       <span aria-hidden="true">×</span>
                     </button>
                   </div>
-                  <div class="modal-body">Are you sure you want to delete {{ item.BookingStatus }} ?</div>
+                  <div class="modal-body">Are you sure you want to delete {{ item.Size }} ?</div>
                   <div class="modal-footer">
                     <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
                     <a class="btn btn-primary"
-                      href="{{url_for('portion.delete_portion', IdPortion = item.IdPortion )}}">Delete</a>
+                      href="{{url_for('size.delete_size', IdSize = item.IdSize )}}">Delete</a>
                   </div>
                 </div>
               </div>
@@ -134,17 +144,25 @@
   <div class="modal-dialog" role="document">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title" id="exampleModalLabel">Insert Status</h5>
+        <h5 class="modal-title" id="exampleModalLabel">Insert Size</h5>
         <button class="close" type="button" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">×</span>
         </button>
       </div>
       <div class="modal-body">
-        <form action="{{url_for('portion.add_portion')}}" method="POST">
+        <form action="{{url_for('size.add_size')}}" method="POST">
           <div class="row">
             <div class="col">
-              <label for="exampleFormControlSelect1">Insert Status :</label>
-              <input type="text" class="form-control" placeholder="Status name" name="BookingStatusName">
+              <label for="exampleFormControlSelect1">Insert Size :</label>
+              <input type="text" class="form-control" placeholder="Size" name="Size">
+            </div>
+            <div class="col">
+              <label for="exampleFormControlSelect1">Choose status :</label>
+              <select id="inputState" class="form-control" name="Status">
+                {% for item in SituationItems %}
+                <option value="{{ item.IdSituation }}">{{ item.Situation }}</option>
+                {% endfor %}
+              </select>
             </div>
           </div>
       </div>

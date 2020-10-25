@@ -11,7 +11,6 @@ def load_user(IdUser):
 class Categories(db.Model):
     IdCategory = db.Column(db.Integer, primary_key=True)
     Category  = db.Column(db.String(250), nullable=False)
-    ImageUrl   = db.Column(db.String(250), nullable=False)
     Enabled = db.Column(db.Integer, db.ForeignKey('situation.IdSituation'))
     CreatedAt = db.Column(db.DateTime, nullable=False) 
     situation = db.relationship('Situation', backref='Categories')
@@ -72,27 +71,29 @@ class Products(db.Model):
     Name  = db.Column(db.String(250), nullable=True)
     Description  = db.Column(db.String(250), nullable=True)
     ImageUrl = db.Column(db.String(250), nullable=True)
-    IdPortion  = db.Column(db.Integer, db.ForeignKey('portion.IdPortion'))
+    IdSize  = db.Column(db.Integer, db.ForeignKey('size.IdSize'))
     IdUser = db.Column(db.Integer, db.ForeignKey('users.IdUser'))
     IdCategory = db.Column(db.Integer, db.ForeignKey('categories.IdCategory'))
     Price  = db.Column(db.String(250), nullable=True)
     CreatedAt = db.Column(db.DateTime, nullable=False)
-    portion = db.relationship("Portion", backref="Products")
+    size = db.relationship("Size", backref="Products")
     user = db.relationship('Users',  backref="Products")
     cat = db.relationship('Categories',  backref="Products")
 
 
 
     def __repr__(self) :
-        return f"Products('{self.IdProduct}',{self.Name}','{self.Description}','{self.ImageUrl}','{self.IdPortion}','{self.IdUser}','{self.IdCategory}','{self.Price}','{self.CreatedAt}')"        
+        return f"Products('{self.IdProduct}',{self.Name}','{self.Description}','{self.ImageUrl}','{self.IdSize}','{self.IdUser}','{self.IdCategory}','{self.Price}','{self.CreatedAt}')"        
 
-class Portion(db.Model):
-    IdPortion  = db.Column(db.Integer, primary_key=True)
-    Portion   = db.Column(db.String(250), nullable=False)
+class Size(db.Model):
+    IdSize  = db.Column(db.Integer, primary_key=True)
+    Size   = db.Column(db.String(250), nullable=False)
+    Enabled = db.Column(db.Integer, db.ForeignKey('situation.IdSituation'))
     CreatedAt  = db.Column(db.DateTime, nullable=False) 
+    situation = db.relationship('Situation', backref='Size')
 
     def __repr__(self) :
-        return f"Portion('{self.IdPortion }','{self.Portion }','{self.CreatedAt}')"
+        return f"Portion('{self.IdSize }','{self.Enabled }','{self.Size }','{self.CreatedAt}')"
 
 
 class Situation(db.Model):
