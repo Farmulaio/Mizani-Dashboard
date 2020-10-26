@@ -39,7 +39,7 @@ def add_product():
     if request.method == 'POST':
         file = request.files['ImageUrl']
         file.save(os.path.join(app.config['UPLOAD_FOLDER'] , file.filename))
-        NewProduct = Products(Name = request.form['ProductName'], Description = request.form['Description'], Usage = request.form['Usage'], Benefit = request.form['Benefit'], Enabled = request.form['Status'], Price = request.form['Price'], IdCategory = request.form['Category'], IdSize = request.form['Size'], IdUser = current_user.IdUser, ImageUrl = "https://dashboard.farmula.ng/static/img/" + file.filename)
+        NewProduct = Products(Name = request.form['ProductName'], Description = request.form['Description'], Usage = request.form['Usage'], Benefit = request.form['Benefit'], Enabled = request.form['Status'], Price = request.form['Price'], IdCategory = request.form['Category'], IdSize = request.form['Size'], IdUser = current_user.IdUser, ImageUrl = "https://mizani.farmula.io/static/img/" + file.filename)
         try :
             db.session.add(NewProduct)
             db.session.commit()
