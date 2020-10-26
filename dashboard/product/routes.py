@@ -57,16 +57,21 @@ def add_product():
 @login_required
 def edit_product(IdProduct):
     if request.method == 'POST':
-        EditBooking = db.session.query(Products).filter_by(IdProduct = IdProduct).one()
-        EditBooking.OrganizationName = request.form['OrganizationName']
-        EditBooking.Poc  = request.form['poc']
-        EditBooking.PhoneNumber = request.form['phonenumbers']
-        EditBooking.IdBookingStatus = request.form['BookingStatus']
-        EditBooking.IdHall  = request.form['Hall']
-        EditBooking.Price  = request.form['Price']
-        EditBooking.Bookingtime  = request.form['Bookingtime']
+        file = request.files['ImageUrl']
+        file.save(os.path.join(app.config['UPLOAD_FOLDER'] , file.filename))
+        
+        EditProduct = db.session.query(Products).filter_by(IdProduct = IdProduct).one()
+        EditProduct.Name = request.form['ProductName']
+        EditProduct.Description  = request.form['Description']
+        EditProduct.Usage = request.form['Usage']
+        EditProduct.Benefit = request.form['Benefit']
+        EditProduct.Enabled  = request.form['Enabled']
+        EditProduct.Price  = request.form['Price']
+        EditProduct.IdCategory  = request.form['IdCategory']
+        EditProduct.IdSize  = request.form['IdSize']
+        EditProduct.ImageUrl  =  "https://mizani.farmula.io/static/img/" + file.filename
         try :
-            db.session.add(EditBooking)
+            db.session.add(EditProduct)
             db.session.commit()
             flash('Yes !! Product is edited successfully '+ Happy , 'success')
             return redirect(url_for('product.get_product'))
