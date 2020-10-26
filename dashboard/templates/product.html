@@ -28,10 +28,10 @@
               <!-- <th>Business Name</th> -->
               <th>Category</th>
               <th>Description</th>
-              <th>Portion</th>
+              <th>Benefit</th>
+              <th>Usage</th>
+              <th>Size</th>
               <th>Price</th>
-              <th>User</th>
-              <th>CreatedAt</th>
               <th>Action</th>
             </tr>
           </thead>
@@ -48,12 +48,12 @@
             <tr>
               <td> {{ item.IdProduct }} </td>
               <td> {{ item.Name }} </td>
-              <td> {{ item.IdCategory }} </td>
+              <td> {{ item.cat.Category }} </td>
               <td> {{ item.Description }} </td>
-              <td> {{ item.IdPortion }} </td>
-              <td>{{ item.Price }} SDG</td>
-              <td>{{ item.user.FirstName }}</td>
-              <td>{{ item.CreatedAt }}</td>
+              <td> {{ item.Benefit }} </td>
+              <td> {{ item.Usage }} </td>
+              <td> {{ item.size.Size }} </td>
+              <td>{{ item.Price }} KSH</td>
               <td>
                 <a href="#" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm" data-toggle="modal"
                   data-target="#editModal{{ item.IdProduct }}"><i class="fas fa-edit fa-sm text-white-50"></i>
@@ -73,54 +73,69 @@
               <div class="modal-dialog" role="document">
                 <div class="modal-content">
                   <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLabel">Edit Booking</h5>
+                    <h5 class="modal-title" id="exampleModalLabel">Edit Product</h5>
                     <button class="close" type="button" data-dismiss="modal" aria-label="Close">
                       <span aria-hidden="true">×</span>
                     </button>
                   </div>
                   <div class="modal-body">
-                    <form action="{{url_for('product.edit_product', IdProduct = item.IdProduct )}}" method="POST">
+                    <form action="{{url_for('product.edit_product', IdProduct = item.IdProduct )}}" method="POST" enctype = "multipart/form-data">
                       <div class="form-row">
                         <div class="form-group col-md-12">
-                          <label for="exampleFormControlSelect1">Organization Name :</label>
-                          <input type="text" class="form-control" id="inputAddress" value="{{ item.OrganizationName }}" name="OrganizationName">
-                        </div>
-                      </div>
-                      <div class="form-row">
-                        <div class="form-group col-md-12">
-                          <label for="exampleFormControlSelect1">Point of Contact :</label>
-                          <input type="text" class="form-control" id="inputAddress" value="{{ item.Poc }}" name="poc">
-                        </div>
-                      </div>
-                      <div class="form-row">
-                        <div class="form-group col-md-12">
-                          <label for="exampleFormControlSelect1">Phone Number :</label>
-                          <input type="text" class="form-control" id="inputAddress" value="{{ item.PhoneNumber }}" name="phonenumbers">
+                          <label for="exampleFormControlSelect1">Product Name :</label>
+                          <input type="text" class="form-control" id="inputAddress" value="{{ item.Name }}" name="ProductName">
                         </div>
                       </div>
                       <div class="form-group">
-                        <label for="exampleFormControlSelect1">Choose Hall :</label>
-                        <select class="form-control" id="exampleFormControlSelect1" name="Hall">
-                          {% for hall in HallItems %}
-                          <option value="{{ hall.IdHall }}">{{ hall.Name }}</option>
+                        <label for="exampleFormControlSelect1">Choose Product Category :</label>
+                        <select class="form-control" id="exampleFormControlSelect1" name="Category">
+                          {% for Category in CategoriesItems %}
+                          <option value="{{ Category.IdCategory }}">{{ Category.Category }}</option>
                           {% endfor %}
                         </select>
                       </div>
                       <div class="form-group">
-                        <label for="exampleFormControlSelect1">Choose Booking Status :</label>
-                        <select class="form-control" id="exampleFormControlSelect1" name="BookingStatus">
-                          {% for status in BookingStatusItems %}
-                          <option value="{{ status.IdBookingStatus }}">{{ status.BookingStatus }}</option>
+                        <label for="exampleFormControlSelect1">Choose Product Size :</label>
+                        <select class="form-control" id="exampleFormControlSelect1" name="Size">
+                          {% for Size in SizeItems %}
+                          <option value="{{ Size.IdSize }}">{{ Size.Size }}</option>
                           {% endfor %}
                         </select>
                       </div>
+                      <div class="form-row">
+                        <div class="form-group col-md-12">
+                          <label for="exampleFormControlSelect1">Description :</label>
+                          <textarea id="summernoted" name="Description"></textarea>
+                        </div>
+                      </div>
+                      <div class="form-row">
+                        <div class="form-group col-md-12">
+                          <label for="exampleFormControlSelect1">Usage :</label>
+                          <textarea id="summernoteu"  name="Usage"></textarea>
+                        </div>
+                      </div>
+                      <div class="form-row">
+                        <div class="form-group col-md-12">
+                          <label for="exampleFormControlSelect1">Benefit :</label>
+                          <textarea id="summernoteb" name="Benefit"></textarea>
+                        </div>
+                      </div>
+                      <div class="form-group">
+                        <label for="exampleFormControlSelect1">Choose Product Status :</label>
+                        <select class="form-control" id="exampleFormControlSelect1" name="Status">
+                          {% for status in SituationItems %}
+                          <option value="{{ status.IdSituation }}">{{ status.Situation }}</option>
+                          {% endfor %}
+                        </select>
+                      </div>
+                    
                       <div class="form-group">
                         <label for="inputAddress">Price :</label>
-                        <input type="text" class="form-control" id="inputAddress" value="{{ item.Price }}" name="Price">
+                        <input type="text" class="form-control" id="inputAddress" value="{{ item.Price }}"  name="Price">
                       </div>
                       <div class="form-group">
-                        <label for="inputAddress2">Booking Date :</label>
-                        <input type="date" class="form-control" id="inputAddress2" value="{{ item.Bookingtime }}" name="Bookingtime">
+                        <label for="exampleFormControlSelect1">Insert Image :</label>
+                        <input type="file" class="form-control"  name="ImageUrl">
                       </div>
                   </div>
                   <div class="modal-footer">
@@ -131,7 +146,7 @@
                 </div>
               </div>
             </div>
-
+            
 
             <!-- edit Modal-->
             <div class="modal fade" id="editStatusModal{{ item.IdProduct }}" tabindex="-1" role="dialog"
@@ -139,7 +154,7 @@
               <div class="modal-dialog" role="document">
                 <div class="modal-content">
                   <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLabel">Edit Booking</h5>
+                    <h5 class="modal-title" id="exampleModalLabel">Edit Product</h5>
                     <button class="close" type="button" data-dismiss="modal" aria-label="Close">
                       <span aria-hidden="true">×</span>
                     </button>
@@ -148,9 +163,9 @@
                     <form action="{{url_for('product.edit_status_product', IdProduct = item.IdProduct )}}" method="POST">
                       <div class="form-group">
                         <label for="exampleFormControlSelect1">Edit Status :</label>
-                        <select class="form-control" id="exampleFormControlSelect1" name="BookingStatusName">
-                          {% for item in BookingStatusItems %}
-                          <option value="{{ item.IdBookingStatus }}">{{ item.BookingStatus }}</option>
+                        <select class="form-control" id="exampleFormControlSelect1" name="Status">
+                          {% for item in SituationItems %}
+                          <option value="{{ item.IdSituation }}">{{ item.Situation }}</option>
                           {% endfor %}
                         </select>
                       </div>
@@ -179,7 +194,7 @@
                       <span aria-hidden="true">×</span>
                     </button>
                   </div>
-                  <div class="modal-body">Are you sure you want to delete {{ item.BookingNumber }} ?</div>
+                  <div class="modal-body">Are you sure you want to delete {{ item.Name }} ?</div>
                   <div class="modal-footer">
                     <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
                     <a class="btn btn-primary" href="{{url_for('product.delete_product', IdProduct = item.IdProduct )}}">Delete</a>
@@ -212,54 +227,69 @@
   <div class="modal-dialog" role="document">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title" id="exampleModalLabel">Insert Booking</h5>
+        <h5 class="modal-title" id="exampleModalLabel">Insert Product</h5>
         <button class="close" type="button" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">×</span>
         </button>
       </div>
       <div class="modal-body">
-        <form action="{{url_for('product.add_product')}}" method="POST">
+        <form action="{{url_for('product.add_product')}}" method="POST" enctype = "multipart/form-data">
           <div class="form-row">
             <div class="form-group col-md-12">
-              <label for="exampleFormControlSelect1">Organization Name :</label>
-              <input type="text" class="form-control" id="inputAddress" name="OrganizationName">
-            </div>
-          </div>
-          <div class="form-row">
-            <div class="form-group col-md-12">
-              <label for="exampleFormControlSelect1">Point of Contact :</label>
-              <input type="text" class="form-control" id="inputAddress" name="poc">
-            </div>
-          </div>
-          <div class="form-row">
-            <div class="form-group col-md-12">
-              <label for="exampleFormControlSelect1">Phone Number :</label>
-              <input type="text" class="form-control" id="inputAddress" name="phonenumbers">
+              <label for="exampleFormControlSelect1">Product Name :</label>
+              <input type="text" class="form-control" id="inputAddress" name="ProductName">
             </div>
           </div>
           <div class="form-group">
-            <label for="exampleFormControlSelect1">Choose Hall :</label>
-            <select class="form-control" id="exampleFormControlSelect1" name="Hall">
-              {% for hall in HallItems %}
-              <option value="{{ hall.IdHall }}">{{ hall.Name }}</option>
+            <label for="exampleFormControlSelect1">Choose Product Category :</label>
+            <select class="form-control" id="exampleFormControlSelect1" name="Category">
+              {% for Category in CategoriesItems %}
+              <option value="{{ Category.IdCategory }}">{{ Category.Category }}</option>
               {% endfor %}
             </select>
           </div>
           <div class="form-group">
-            <label for="exampleFormControlSelect1">Choose Booking Status :</label>
-            <select class="form-control" id="exampleFormControlSelect1" name="BookingStatus">
-              {% for status in BookingStatusItems %}
-              <option value="{{ status.IdBookingStatus }}">{{ status.BookingStatus }}</option>
+            <label for="exampleFormControlSelect1">Choose Product Size :</label>
+            <select class="form-control" id="exampleFormControlSelect1" name="Size">
+              {% for Size in SizeItems %}
+              <option value="{{ Size.IdSize }}">{{ Size.Size }}</option>
               {% endfor %}
             </select>
           </div>
+          <div class="form-row">
+            <div class="form-group col-md-12">
+              <label for="exampleFormControlSelect1">Description :</label>
+              <textarea id="summernoted" name="Description"></textarea>
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="form-group col-md-12">
+              <label for="exampleFormControlSelect1">Usage :</label>
+              <textarea id="summernoteu" name="Usage"></textarea>
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="form-group col-md-12">
+              <label for="exampleFormControlSelect1">Benefit :</label>
+              <textarea id="summernoteb" name="Benefit"></textarea>
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="exampleFormControlSelect1">Choose Product Status :</label>
+            <select class="form-control" id="exampleFormControlSelect1" name="Status">
+              {% for status in SituationItems %}
+              <option value="{{ status.IdSituation }}">{{ status.Situation }}</option>
+              {% endfor %}
+            </select>
+          </div>
+        
           <div class="form-group">
             <label for="inputAddress">Price :</label>
             <input type="text" class="form-control" id="inputAddress" placeholder="Insert Price" name="Price">
           </div>
           <div class="form-group">
-            <label for="inputAddress2">Booking Date :</label>
-            <input type="date" class="form-control" id="inputAddress2" name="Bookingtime">
+            <label for="exampleFormControlSelect1">Insert Image :</label>
+            <input type="file" class="form-control"  name="ImageUrl">
           </div>
       </div>
       <div class="modal-footer">

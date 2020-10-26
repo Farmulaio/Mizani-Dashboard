@@ -5,18 +5,22 @@ from flask_login import LoginManager
 from dashboard.config import Config
 from flask_googlemaps import GoogleMaps
 from flask_wkhtmltopdf import Wkhtmltopdf
+import os
 
 db = SQLAlchemy()
 bcrypt = Bcrypt()
 login_manager = LoginManager()
 login_manager.login_view = 'login'
 
-
+cwd = os.getcwd()
+# UPLOAD_FOLDER = '/var/www/Dashboard/dashboard/static/img/'
+UPLOAD_FOLDER = '/Users/ahmedk/Desktop/Farmula/Mizani/Dashboard/dashboard/static/img/'
 
 def create_app(config_class=Config):
     app = Flask(__name__, static_folder='static',
             template_folder='templates')
     app.config.from_object(Config)
+    app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 
     db.init_app(app)
     bcrypt.init_app(app)

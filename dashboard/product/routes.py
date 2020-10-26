@@ -1,11 +1,12 @@
 from flask_login import login_user, current_user, logout_user, login_required
-from dashboard.models import  Users,Situation, Products, Categories
+from dashboard.models import  Users,Situation, Products, Categories, Size
 from flask import make_response, abort, redirect, url_for, render_template, request, jsonify, flash, Markup, Blueprint
 from dashboard import db, bcrypt
 from sqlalchemy import desc
 from sqlalchemy import and_
 import random
 import string, os
+from dashboard import create_app
 from datetime import datetime
 
 
@@ -18,46 +19,36 @@ Sassy = Markup('<span>&#128540;</span>')
 def random_string_generator(size=5,  chars=string.ascii_uppercase + string.digits):
     return ''.join(random.choice(chars) for _ in range(size))
 
+app = create_app()
 
 # get Product
 @product.route('/product', methods=['POST', 'GET'])
 @login_required
 def get_product():
     ProductsItems = db.session.query(Products).all()
-    # HallItems = db.session.query(Hall).filter_by(Enabled = 1).all()
-    # BookingStatusItems = db.session.query(BookingStatus).all()
-    # PendingBooking = db.session.query(Bookings).join(BookingStatus).filter(BookingStatus.BookingStatus == 'Pending').count()
-    # NewBookings = db.session.query(Bookings).join(BookingStatus).filter(BookingStatus.BookingStatus == 'Pending').all()
+    SituationItems = db.session.query(Situation).all()
+    CategoriesItems = db.session.query(Categories).all()
+    SizeItems = db.session.query(Size).all()
  
-    return render_template('product.html', ProductsItems = ProductsItems)
+    return render_template('product.html', ProductsItems = ProductsItems, SituationItems = SituationItems, CategoriesItems = CategoriesItems, SizeItems = SizeItems)
 
 # add new Product
 @product.route('/product/new', methods=['POST', 'GET'])
 @login_required
 def add_product():
     if request.method == 'POST':
-        NewBooking = Products(BookingNumber = "B"+random_string_generator(), OrganizationName = request.form['OrganizationName'], Poc = request.form['poc'], PhoneNumber = request.form['phonenumbers'], IdBookingStatus = request.form['BookingStatus'], Price = request.form['Price'], IdHall = request.form['Hall'], Bookingtime = request.form['Bookingtime'], IdUser = current_user.IdUser)
+        file = request.files['ImageUrl']
+        file.save(os.path.join(app.config['UPLOAD_FOLDER'] , file.filename))
+        NewProduct = Products(Name = request.form['ProductName'], Description = request.form['Description'], Usage = request.form['Usage'], Benefit = request.form['Benefit'], Enabled = request.form['Status'], Price = request.form['Price'], IdCategory = request.form['Category'], IdSize = request.form['Size'], IdUser = current_user.IdUser, ImageUrl = "https://dashboard.farmula.ng/static/img/" + file.filename)
         try :
-            # BookingItems = db.session.query(Booking).join(BookingStatus).filter(and_(Booking.IdHall == request.form['Hall'] , Booking.Bookingtime == request.form['Bookingtime'], Booking.IdBookingStatus == 2)).one()
-            flash('Sorry !! ' + Sad + ' This Hall is Booked in this date . Please choose  another date ', 'danger')
+            db.session.add(NewProduct)
+            db.session.commit()
+
+            flash('Yes !! Product inserted successfully. Great Job ' + current_user.FirstName + Happy , 'success')
             return redirect(url_for('product.get_product'))
         except Exception as err :
-            db.session.add(NewBooking)
-            db.session.commit()
-            flash('Yes !! Booking inserted successfully. Great Job ' + current_user.FirstName + Happy , 'success')
-            return redirect(url_for('product.get_product'))
-
-
-        # try :
-        #     db.session.add(NewBooking)
-        #     db.session.commit()
-
-         
-        #     flash('Yes !! Booking inserted successfully. Great Job ' + current_user.FirstName + Happy , 'success')
-        #     return redirect(url_for('product.get_product))
-        # except Exception as err :
-        #     print(err)
-        #     flash('No !! ' + Sad + ' Booking did not insert successfully . Please check insertion ', 'danger')
+            print(err)
+            flash('No !! ' + Sad + ' Booking did not insert successfully . Please check insertion ', 'danger')
  
     return redirect(url_for('product.get_product'))
 
@@ -77,10 +68,10 @@ def edit_product(IdProduct):
         try :
             db.session.add(EditBooking)
             db.session.commit()
-            flash('Yes !! Booking is edited successfully '+ Happy , 'success')
+            flash('Yes !! Product is edited successfully '+ Happy , 'success')
             return redirect(url_for('product.get_product'))
         except Exception as err :
-            flash('No !! ' + Sad + ' Booking did not edit successfully . Please check insertion ' , 'danger')
+            flash('No !! ' + Sad + ' Product did not edit successfully . Please check insertion ' , 'danger')
            
     return redirect(url_for('product.get_product'))
 
@@ -90,16 +81,16 @@ def edit_product(IdProduct):
 @login_required
 def edit_status_product(IdProduct):
     if request.method == 'POST':
-        EditBooking = db.session.query(Products).filter_by(IdBooking = IdBooking).one()
-        EditBooking.IdBookingStatus = request.form['BookingStatusName']
+        EditProduct = db.session.query(Products).filter_by(IdProduct = IdProduct).one()
+        EditProduct.Enabled = request.form['Status']
        
         try :
-            db.session.add(EditBooking)
+            db.session.add(EditProduct)
             db.session.commit()
-            flash('Yes !! Booking status is edited successfully '+ Happy , 'success')
+            flash('Yes !! Product status is edited successfully '+ Happy , 'success')
             return redirect(url_for('product.get_product'))
         except Exception as err :
-            flash('No !! ' + Sad + ' Booking status did not edit successfully . Please check insertion ' , 'danger')
+            flash('No !! ' + Sad + ' Product status did not edit successfully . Please check insertion ' , 'danger')
          
     return redirect(url_for('product.get_product'))
 
@@ -109,11 +100,11 @@ def edit_status_product(IdProduct):
 @login_required
 def delete_product(IdProduct):
     if request.method == 'GET':
-        DeleteBooking = db.session.query(Products).filter_by(IdProduct = IdProduct).one()
+        DeleteProduct = db.session.query(Products).filter_by(IdProduct = IdProduct).one()
         try :
-            db.session.delete(DeleteBooking)
+            db.session.delete(DeleteProduct)
             db.session.commit()
-            flash('Yes !! Booking is deleted successfully '+ Happy , 'success')
+            flash('Yes !! Product is deleted successfully '+ Happy , 'success')
             return redirect(url_for('product.get_product'))
         except Exception as err :
             flash('NA NA NA you can delete me. Try again ' + Sassy  , 'danger')

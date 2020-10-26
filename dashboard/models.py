@@ -70,20 +70,24 @@ class Products(db.Model):
     IdProduct = db.Column(db.Integer, primary_key=True)
     Name  = db.Column(db.String(250), nullable=True)
     Description  = db.Column(db.String(250), nullable=True)
+    Benefit  = db.Column(db.String(250), nullable=True)
+    Usage  = db.Column(db.String(250), nullable=True)
     ImageUrl = db.Column(db.String(250), nullable=True)
     IdSize  = db.Column(db.Integer, db.ForeignKey('size.IdSize'))
     IdUser = db.Column(db.Integer, db.ForeignKey('users.IdUser'))
+    Enabled = db.Column(db.Integer, db.ForeignKey('situation.IdSituation'))
     IdCategory = db.Column(db.Integer, db.ForeignKey('categories.IdCategory'))
     Price  = db.Column(db.String(250), nullable=True)
     CreatedAt = db.Column(db.DateTime, nullable=False)
     size = db.relationship("Size", backref="Products")
     user = db.relationship('Users',  backref="Products")
     cat = db.relationship('Categories',  backref="Products")
+    situation = db.relationship('Situation', backref='Products')
 
 
 
     def __repr__(self) :
-        return f"Products('{self.IdProduct}',{self.Name}','{self.Description}','{self.ImageUrl}','{self.IdSize}','{self.IdUser}','{self.IdCategory}','{self.Price}','{self.CreatedAt}')"        
+        return f"Products('{self.IdProduct}',{self.Name}','{self.Description}','{self.Benefit}','{self.Usage}','{self.ImageUrl}','{self.IdSize}','{self.Enabled}','{self.IdUser}','{self.IdCategory}','{self.Price}','{self.CreatedAt}')"        
 
 class Size(db.Model):
     IdSize  = db.Column(db.Integer, primary_key=True)
