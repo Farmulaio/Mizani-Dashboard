@@ -88,6 +88,24 @@ class Products(db.Model):
 
     def __repr__(self) :
         return f"Products('{self.IdProduct}',{self.Name}','{self.Description}','{self.Benefit}','{self.Usage}','{self.ImageUrl}','{self.IdSize}','{self.Enabled}','{self.IdUser}','{self.IdCategory}','{self.Price}','{self.CreatedAt}')"        
+    
+    @property
+    def serialize(self):
+       """Return object data in easily serializable format"""
+       return {
+            'IdProduct': self.IdProduct,
+            'Name' : self.Name,
+            'Description' : self.Description,
+            'Benefit' : self.Benefit,
+            'ImageUrl' : self.ImageUrl,
+            'IdSize' : self.size.Size,
+            'IdCategory' : self.cat.Category,
+            'Enabled' : self.Enabled,
+            'Price' : self.Price,
+            'CreatedAt' : self.CreatedAt
+       }
+
+
 
 class Size(db.Model):
     IdSize  = db.Column(db.Integer, primary_key=True)

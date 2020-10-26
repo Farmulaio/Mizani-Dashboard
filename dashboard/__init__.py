@@ -13,8 +13,8 @@ login_manager = LoginManager()
 login_manager.login_view = 'login'
 
 cwd = os.getcwd()
-# UPLOAD_FOLDER = '/var/www/Dashboard/dashboard/static/img/'
-UPLOAD_FOLDER = '/Users/ahmedk/Desktop/Farmula/Mizani/Dashboard/dashboard/static/img/'
+UPLOAD_FOLDER = '/var/www/Mizani/dashboard/static/img/'
+# UPLOAD_FOLDER = '/Users/ahmedk/Desktop/Farmula/Mizani/Dashboard/dashboard/static/img/'
 
 def create_app(config_class=Config):
     app = Flask(__name__, static_folder='static',
