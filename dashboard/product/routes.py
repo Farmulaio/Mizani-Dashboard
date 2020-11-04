@@ -65,10 +65,10 @@ def edit_product(IdProduct):
         EditProduct.Description  = request.form['Description']
         EditProduct.Usage = request.form['Usage']
         EditProduct.Benefit = request.form['Benefit']
-        EditProduct.Enabled  = request.form['Enabled']
+        EditProduct.Enabled  = request.form['Status']
         EditProduct.Price  = request.form['Price']
-        EditProduct.IdCategory  = request.form['IdCategory']
-        EditProduct.IdSize  = request.form['IdSize']
+        EditProduct.IdCategory  = request.form['Category']
+        EditProduct.IdSize  = request.form['Size']
         EditProduct.ImageUrl  =  "https://mizani.farmula.io/static/img/" + file.filename
         try :
             db.session.add(EditProduct)
