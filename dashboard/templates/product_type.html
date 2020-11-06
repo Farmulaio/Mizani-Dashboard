@@ -39,24 +39,24 @@
                     </tr>
                   </tfoot> -->
           <tbody>
-            {% for item in CategoryItems %}
+            {% for item in ProductTypeItems %}
             <tr>
-              <td>{{ item.IdCategory }}</td>
-              <td>{{ item.Category }}</td>
+              <td>{{ item.IdProductType }}</td>
+              <td>{{ item.ProductType }}</td>
               <td>{{ item.situation.Situation }}</td>
               <td>{{ item.CreatedAt }}</td>
               <td>
                 <a href="#" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm" data-toggle="modal"
-                  data-target="#editModal{{ item.IdCategory }}"><i class="fas fa-edit fa-sm text-white-50"></i>
+                  data-target="#editModal{{ item.IdProductType }}"><i class="fas fa-edit fa-sm text-white-50"></i>
                   Edit </a>
                 <a href="#" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm" data-toggle="modal"
-                  data-target="#deleteModal{{ item.IdCategory }}"><i class="fas fa-trash-alt fa-sm text-white-50"></i>
+                  data-target="#deleteModal{{ item.IdProductType }}"><i class="fas fa-trash-alt fa-sm text-white-50"></i>
                   Delete </a>
               </td>
             </tr>
 
             <!-- edit Modal-->
-            <div class="modal fade" id="editModal{{ item.IdCategory }}" tabindex="-1" role="dialog"
+            <div class="modal fade" id="editModal{{ item.IdProductType }}" tabindex="-1" role="dialog"
               aria-labelledby="exampleModalLabel" aria-hidden="true">
               <div class="modal-dialog" role="document">
                 <div class="modal-content">
@@ -67,11 +67,11 @@
                     </button>
                   </div>
                   <div class="modal-body">
-                    <form action="{{url_for('category.edit_category', IdCategory = item.IdCategory )}}" method="POST">
+                    <form action="{{url_for('producttype.edit_producttype', IdProductType = item.IdProductType )}}" method="POST">
                       <div class="row">
                         <div class="col">
                           <label for="exampleFormControlSelect1">Insert Product Type :</label>
-                          <input type="text" class="form-control" value="{{ item.Category }}"  name="CategoryName">
+                          <input type="text" class="form-control" value="{{ item.ProductType }}"  name="ProductTypeName">
                         </div>
                         <div class="col">
                           <label for="exampleFormControlSelect1">Choose status :</label>
@@ -95,7 +95,7 @@
 
 
             <!-- delete Modal-->
-            <div class="modal fade" id="deleteModal{{ item.IdCategory }}" tabindex="-1" role="dialog"
+            <div class="modal fade" id="deleteModal{{ item.IdProductType }}" tabindex="-1" role="dialog"
               aria-labelledby="exampleModalLabel" aria-hidden="true">
               <div class="modal-dialog" role="document">
                 <div class="modal-content">
@@ -105,10 +105,10 @@
                       <span aria-hidden="true">×</span>
                     </button>
                   </div>
-                  <div class="modal-body">Are you sure you want to delete {{ item.Category }} ?</div>
+                  <div class="modal-body">Are you sure you want to delete {{ item.ProductType }} ?</div>
                   <div class="modal-footer">
                     <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
-                    <a class="btn btn-primary" href="{{url_for('category.delete_category', IdCategory = item.IdCategory)}}">Delete</a>
+                    <a class="btn btn-primary" href="{{url_for('producttype.delete_producttype', IdProductType = item.IdProductType)}}">Delete</a>
                   </div>
                 </div>
               </div>
@@ -147,7 +147,7 @@
           <div class="row">
             <div class="col">
               <label for="exampleFormControlSelect1">Insert Product Type:</label>
-              <input type="text" class="form-control" placeholder="Category name" name="CategoryName">
+              <input type="text" class="form-control" placeholder="Product Type" name="ProductTypeName">
             </div>
             <div class="col">
               <label for="exampleFormControlSelect1">Choose status :</label>

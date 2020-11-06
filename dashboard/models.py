@@ -20,6 +20,19 @@ class Categories(db.Model):
         return f"Categories('{self.IdCategory}','{self.Category },'{self.Enabled}','{self.CreatedAt}')"
 
 
+class ProductType(db.Model):
+    IdProductType = db.Column(db.Integer, primary_key=True)
+    ProductType  = db.Column(db.String(250), nullable=False)
+    Enabled = db.Column(db.Integer, db.ForeignKey('situation.IdSituation'))
+    CreatedAt = db.Column(db.DateTime, nullable=False) 
+    situation = db.relationship('Situation', backref='ProductType')
+
+
+    def __repr__(self) :
+        return f"ProductType('{self.IdProductType}','{self.ProductType },'{self.Enabled}','{self.CreatedAt}')"
+
+
+
 
 class Role(db.Model):
     IdRole = db.Column(db.Integer, primary_key=True)

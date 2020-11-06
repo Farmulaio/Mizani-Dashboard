@@ -1,5 +1,5 @@
 from flask_login import login_user, current_user, logout_user, login_required
-from dashboard.models import  Users,Situation, Products, Categories
+from dashboard.models import  Users,Situation, Products, Categories, ProductType
 from flask import abort, redirect, url_for, render_template, request, jsonify, flash, Markup, Blueprint
 from dashboard import db, bcrypt
 
@@ -13,19 +13,19 @@ Sassy = Markup('<span>&#128540;</span>')
 @producttype.route('/product_type', methods=['POST','GET'])
 @login_required
 def get_producttype():
-    CategoryItems = db.session.query(Categories).all()
+    ProductTypeItems = db.session.query(ProductType).all()
     SituationItems = db.session.query(Situation).all()
 
-    return render_template('product_type.html', CategoryItems = CategoryItems, SituationItems = SituationItems)
+    return render_template('product_type.html', ProductTypeItems = ProductTypeItems, SituationItems = SituationItems)
 
-# add new Category
+# add new ProductType
 @producttype.route('/product_type/new', methods=['POST','GET'])
 @login_required
 def add_producttype():
     if request.method == 'POST':
-        NewCategory = Categories(Category = request.form['CategoryName'], Enabled= request.form['Status'])
+        NewProductType = ProductType(ProductType = request.form['ProductTypeName'], Enabled= request.form['Status'])
         try :
-            db.session.add(NewCategory)
+            db.session.add(NewProductType)
             db.session.commit()
             flash('Yes !! Product Type inserted successfully. Great Job ' + current_user.FirstName + Happy , 'success')
             return redirect(url_for('producttype.get_producttype'))
@@ -39,11 +39,11 @@ def add_producttype():
 @login_required
 def edit_producttype(IdProductType):
     if request.method == 'POST':
-        EditCategory = db.session.query(Categories).filter_by(IdProductType = IdProductType).one()
-        EditCategory.Category = request.form['CategoryName']
-        EditCategory.Enabled = request.form['Status']
+        EditProductType = db.session.query(ProductType).filter_by(IdProductType = IdProductType).one()
+        EditProductType.ProductType = request.form['ProductTypeName']
+        EditProductType.Enabled = request.form['Status']
         try :
-            db.session.add(EditCategory)
+            db.session.add(EditProductType)
             db.session.commit()
             flash('Yes !! Product Type is edited successfully '+ Happy , 'success')
             return redirect(url_for('producttype.get_producttype'))
@@ -57,9 +57,9 @@ def edit_producttype(IdProductType):
 @login_required
 def delete_producttype(IdProductType):
     if request.method == 'GET':
-        DeleteCategory = db.session.query(Categories).filter_by(IdProductType = IdProductType).one()
+        DeleteProductType = db.session.query(ProductType).filter_by(IdProductType = IdProductType).one()
         try :
-            db.session.delete(DeleteCategory)
+            db.session.delete(DeleteProductType)
             db.session.commit()
             flash('Yes !! Product Type is deleted successfully '+ Happy , 'success')
             return redirect(url_for('producttype.get_producttype'))
