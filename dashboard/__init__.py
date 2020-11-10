@@ -27,6 +27,7 @@ def create_app(config_class=Config):
     login_manager.init_app(app)
 
     from dashboard.category.routes import category
+    from dashboard.collection.routes import collection
     from dashboard.producttype.routes import producttype
     from dashboard.size.routes import size
     from dashboard.role.routes import role
@@ -37,6 +38,7 @@ def create_app(config_class=Config):
 
     # from dashboard import routes
     app.register_blueprint(category)
+    app.register_blueprint(collection)
     app.register_blueprint(producttype)
     app.register_blueprint(size)
     app.register_blueprint(users)
