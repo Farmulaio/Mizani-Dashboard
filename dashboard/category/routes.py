@@ -2,6 +2,7 @@ from flask_login import login_user, current_user, logout_user, login_required
 from dashboard.models import  Users,Situation, Products, Categories
 from flask import abort, redirect, url_for, render_template, request, jsonify, flash, Markup, Blueprint
 from dashboard import db, bcrypt
+import datetime
 
 category = Blueprint('category',__name__)
 
@@ -23,7 +24,7 @@ def get_category():
 @login_required
 def add_category():
     if request.method == 'POST':
-        NewCategory = Categories(Category = request.form['CategoryName'], Enabled= request.form['Status'], CreatedAt = "")
+        NewCategory = Categories(Category = request.form['CategoryName'], Enabled= request.form['Status'], CreatedAt = datetime.datetime.now())
         try :
             db.session.add(NewCategory)
             db.session.commit()
