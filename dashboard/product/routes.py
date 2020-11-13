@@ -1,5 +1,5 @@
 from flask_login import login_user, current_user, logout_user, login_required
-from dashboard.models import  Users,Situation, Products, Categories, Size
+from dashboard.models import  Users,Situation, Products, Categories, Size, Collection, Concerns, ProductType
 from flask import make_response, abort, redirect, url_for, render_template, request, jsonify, flash, Markup, Blueprint
 from dashboard import db, bcrypt
 from sqlalchemy import desc
@@ -28,9 +28,12 @@ def get_product():
     ProductsItems = db.session.query(Products).all()
     SituationItems = db.session.query(Situation).all()
     CategoriesItems = db.session.query(Categories).all()
+    CollectiomItems = db.session.query(Collection).all()
+    ConcernsItems  = db.session.query(Concerns).all()
+    ProductTypeItems = db.session.query(ProductType).all()
     SizeItems = db.session.query(Size).all()
  
-    return render_template('product.html', ProductsItems = ProductsItems, SituationItems = SituationItems, CategoriesItems = CategoriesItems, SizeItems = SizeItems)
+    return render_template('product.html', ProductsItems = ProductsItems, SituationItems = SituationItems, CategoriesItems = CategoriesItems, SizeItems = SizeItems, CollectiomItems = CollectiomItems, ConcernsItems = ConcernsItems, ProductTypeItems = ProductTypeItems)
 
 # add new Product
 @product.route('/product/new', methods=['POST', 'GET'])
@@ -39,7 +42,7 @@ def add_product():
     if request.method == 'POST':
         file = request.files['ImageUrl']
         file.save(os.path.join(app.config['UPLOAD_FOLDER'] , file.filename))
-        NewProduct = Products(Name = request.form['ProductName'], Description = request.form['Description'], Usage = request.form['Usage'], Benefit = request.form['Benefit'], Enabled = request.form['Status'], Price = request.form['Price'], IdCategory = request.form['Category'], IdSize = request.form['Size'], IdUser = current_user.IdUser, ImageUrl = "https://mizani.farmula.io/static/img/" + file.filename)
+        NewProduct = Products(Name = request.form['ProductName'], Description = request.form['Description'], Enabled = request.form['Status'], Price = request.form['Price'], IdCategory = request.form['Category'], IdCollection = request.form['Collection'], IdProductType = request.form['ProductType'], IdConcerns = request.form['Concerns'], Quantity = request.form['Quantity'], IdSize = request.form['Size'], IdUser = current_user.IdUser, ImageUrl = "https://mizani.farmula.io/static/img/" + file.filename)
         try :
             db.session.add(NewProduct)
             db.session.commit()
@@ -48,7 +51,7 @@ def add_product():
             return redirect(url_for('product.get_product'))
         except Exception as err :
             print(err)
-            flash('No !! ' + Sad + ' Booking did not insert successfully . Please check insertion ', 'danger')
+            flash('No !! ' + Sad + ' Prodcut did not insert successfully . Please check insertion ', 'danger')
  
     return redirect(url_for('product.get_product'))
 
@@ -63,11 +66,13 @@ def edit_product(IdProduct):
         EditProduct = db.session.query(Products).filter_by(IdProduct = IdProduct).one()
         EditProduct.Name = request.form['ProductName']
         EditProduct.Description  = request.form['Description']
-        EditProduct.Usage = request.form['Usage']
-        EditProduct.Benefit = request.form['Benefit']
+        EditProduct.IdCategory = request.form['Category']
+        EditProduct.IdCollection = request.form['Collection']
+        EditProduct.IdProductType = request.form['ProductType']
+        EditProduct.IdConcerns = request.form['Concerns']
         EditProduct.Enabled  = request.form['Status']
         EditProduct.Price  = request.form['Price']
-        EditProduct.IdCategory  = request.form['Category']
+        EditProduct.Quantity  = request.form['Quantity']
         EditProduct.IdSize  = request.form['Size']
         EditProduct.ImageUrl  =  "https://mizani.farmula.io/static/img/" + file.filename
         try :

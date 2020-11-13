@@ -28,9 +28,11 @@
               <!-- <th>Business Name</th> -->
               <th>Category</th>
               <th>Description</th>
-              <th>Benefit</th>
-              <th>Usage</th>
+              <th>Collection</th>
+              <th>Concerns</th>
+              <th>Product Type</th>
               <th>Size</th>
+              <th>Qty</th>
               <th>Price</th>
               <th>Action</th>
             </tr>
@@ -50,9 +52,11 @@
               <td> {{ item.Name }} </td>
               <td> {{ item.cat.Category }} </td>
               <td> {{ item.Description }} </td>
-              <td> {{ item.Benefit }} </td>
-              <td> {{ item.Usage }} </td>
+              <td> {{ item.coll.Collection }} </td>
+              <td> {{ item.con.Concerns }} </td>
+              <td> {{ item.protype.ProductType }} </td>
               <td> {{ item.size.Size }} </td>
+              <td>{{ item.Quantity }}</td>
               <td>{{ item.Price }} KSH</td>
               <td>
                 <a href="#" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm" data-toggle="modal"
@@ -95,6 +99,30 @@
                         </select>
                       </div>
                       <div class="form-group">
+                        <label for="exampleFormControlSelect1">Choose Product Collection :</label>
+                        <select class="form-control" id="exampleFormControlSelect1" name="Collection">
+                          {% for Collection in CollectiomItems %}
+                          <option value="{{ Collection.IdCollection }}">{{ Collection.Collection }}</option>
+                          {% endfor %}
+                        </select>
+                      </div>
+                      <div class="form-group">
+                        <label for="exampleFormControlSelect1">Choose Product Type :</label>
+                        <select class="form-control" id="exampleFormControlSelect1" name="ProductType">
+                          {% for Type in ProductTypeItems %}
+                          <option value="{{ Type.IdProductType }}">{{ Type.ProductType }}</option>
+                          {% endfor %}
+                        </select>
+                      </div>
+                      <div class="form-group">
+                        <label for="exampleFormControlSelect1">Choose Product Concerns :</label>
+                        <select class="form-control" id="exampleFormControlSelect1" name="Concerns">
+                          {% for Concerns in ConcernsItems %}
+                          <option value="{{ Concerns.IdConcerns }}">{{ Concerns.Concerns }}</option>
+                          {% endfor %}
+                        </select>
+                      </div>
+                      <div class="form-group">
                         <label for="exampleFormControlSelect1">Choose Product Size :</label>
                         <select class="form-control" id="exampleFormControlSelect1" name="Size">
                           {% for Size in SizeItems %}
@@ -108,17 +136,25 @@
                           <textarea class="form-control" rows="5"  name="Description">{{ item.Description }}</textarea>
                         </div>
                       </div>
-                      <div class="form-row">
+                      <!-- <div class="form-row">
                         <div class="form-group col-md-12">
                           <label for="exampleFormControlSelect1">Usage :</label>
                           <textarea class="form-control" rows="5"   name="Usage"> {{ item.Usage }}</textarea>
                         </div>
-                      </div>
-                      <div class="form-row">
+                      </div> -->
+                      <!-- <div class="form-row">
                         <div class="form-group col-md-12">
                           <label for="exampleFormControlSelect1">Benefit :</label>
                           <textarea class="form-control" rows="5"  name="Benefit"> {{ item.Benefit }}</textarea>
                         </div>
+                      </div> -->
+                      <div class="form-group">
+                        <label for="inputAddress">Quantity :</label>
+                        <input type="text" class="form-control" id="inputAddress" value="{{ item.Quantity }}" name="Quantity">
+                      </div>
+                      <div class="form-group">
+                        <label for="inputAddress">Price :</label>
+                        <input type="text" class="form-control" id="inputAddress" value="{{ item.Price }}"  name="Price">
                       </div>
                       <div class="form-group">
                         <label for="exampleFormControlSelect1">Choose Product Status :</label>
@@ -127,11 +163,6 @@
                           <option value="{{ status.IdSituation }}">{{ status.Situation }}</option>
                           {% endfor %}
                         </select>
-                      </div>
-                    
-                      <div class="form-group">
-                        <label for="inputAddress">Price :</label>
-                        <input type="text" class="form-control" id="inputAddress" value="{{ item.Price }}"  name="Price">
                       </div>
                       <div class="form-group">
                         <label for="exampleFormControlSelect1">Insert Image :</label>
@@ -249,6 +280,30 @@
             </select>
           </div>
           <div class="form-group">
+            <label for="exampleFormControlSelect1">Choose Product Collection :</label>
+            <select class="form-control" id="exampleFormControlSelect1" name="Collection">
+              {% for Collection in CollectiomItems %}
+              <option value="{{ Collection.IdCollection }}">{{ Collection.Collection }}</option>
+              {% endfor %}
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="exampleFormControlSelect1">Choose Product Type :</label>
+            <select class="form-control" id="exampleFormControlSelect1" name="ProductType">
+              {% for Type in ProductTypeItems %}
+              <option value="{{ Type.IdProductType }}">{{ Type.ProductType }}</option>
+              {% endfor %}
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="exampleFormControlSelect1">Choose Product Concerns :</label>
+            <select class="form-control" id="exampleFormControlSelect1" name="Concerns">
+              {% for Concerns in ConcernsItems %}
+              <option value="{{ Concerns.IdConcerns }}">{{ Concerns.Concerns }}</option>
+              {% endfor %}
+            </select>
+          </div>
+          <div class="form-group">
             <label for="exampleFormControlSelect1">Choose Product Size :</label>
             <select class="form-control" id="exampleFormControlSelect1" name="Size">
               {% for Size in SizeItems %}
@@ -262,17 +317,25 @@
               <textarea class="form-control" rows="5" name="Description"></textarea>
             </div>
           </div>
-          <div class="form-row">
+          <!-- <div class="form-row">
             <div class="form-group col-md-12">
               <label for="exampleFormControlSelect1">Usage :</label>
               <textarea class="form-control" rows="5"  name="Usage"></textarea>
             </div>
-          </div>
-          <div class="form-row">
+          </div> -->
+          <!-- <div class="form-row">
             <div class="form-group col-md-12">
               <label for="exampleFormControlSelect1">Benefit :</label>
               <textarea class="form-control" rows="5"  name="Benefit"></textarea>
             </div>
+          </div> -->        
+          <div class="form-group">
+            <label for="inputAddress">Quantity :</label>
+            <input type="text" class="form-control" id="inputAddress" placeholder="Insert Quantity" name="Quantity">
+          </div>
+          <div class="form-group">
+            <label for="inputAddress">Price :</label>
+            <input type="text" class="form-control" id="inputAddress" placeholder="Insert Price" name="Price">
           </div>
           <div class="form-group">
             <label for="exampleFormControlSelect1">Choose Product Status :</label>
@@ -281,11 +344,6 @@
               <option value="{{ status.IdSituation }}">{{ status.Situation }}</option>
               {% endfor %}
             </select>
-          </div>
-        
-          <div class="form-group">
-            <label for="inputAddress">Price :</label>
-            <input type="text" class="form-control" id="inputAddress" placeholder="Insert Price" name="Price">
           </div>
           <div class="form-group">
             <label for="exampleFormControlSelect1">Insert Image :</label>

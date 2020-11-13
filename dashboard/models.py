@@ -96,24 +96,31 @@ class Products(db.Model):
     IdProduct = db.Column(db.Integer, primary_key=True)
     Name  = db.Column(db.String(250), nullable=True)
     Description  = db.Column(db.String(250), nullable=True)
-    Benefit  = db.Column(db.String(250), nullable=True)
-    Usage  = db.Column(db.String(250), nullable=True)
+    # Benefit  = db.Column(db.String(250), nullable=True)
+    # Usage  = db.Column(db.String(250), nullable=True)
     ImageUrl = db.Column(db.String(250), nullable=True)
     IdSize  = db.Column(db.Integer, db.ForeignKey('size.IdSize'))
     IdUser = db.Column(db.Integer, db.ForeignKey('users.IdUser'))
     Enabled = db.Column(db.Integer, db.ForeignKey('situation.IdSituation'))
     IdCategory = db.Column(db.Integer, db.ForeignKey('categories.IdCategory'))
+    IdCollection = db.Column(db.Integer, db.ForeignKey('collection.IdCollection'))
+    IdProductType = db.Column(db.Integer, db.ForeignKey('product_type.IdProductType'))
+    IdConcerns = db.Column(db.Integer, db.ForeignKey('concerns.IdConcerns'))
+    Quantity  = db.Column(db.String(250), nullable=True)
     Price  = db.Column(db.String(250), nullable=True)
     CreatedAt = db.Column(db.DateTime, nullable=False)
     size = db.relationship("Size", backref="Products")
     user = db.relationship('Users',  backref="Products")
     cat = db.relationship('Categories',  backref="Products")
+    con = db.relationship('Concerns',  backref="Products")
+    protype = db.relationship('ProductType',  backref="Products")
+    coll = db.relationship('Collection',  backref="Products")
     situation = db.relationship('Situation', backref='Products')
 
 
 
     def __repr__(self) :
-        return f"Products('{self.IdProduct}',{self.Name}','{self.Description}','{self.Benefit}','{self.Usage}','{self.ImageUrl}','{self.IdSize}','{self.Enabled}','{self.IdUser}','{self.IdCategory}','{self.Price}','{self.CreatedAt}')"        
+        return f"Products('{self.IdProduct}',{self.Name}','{self.Description}','{self.ImageUrl}','{self.IdSize}','{self.Enabled}','{self.IdUser}','{self.IdCategory}','{self.IdCollection}','{self.IdProductType}','{self.IdConcerns}','{self.Quantity}','{self.Price}','{self.CreatedAt}')"        
     
     @property
     def serialize(self):
@@ -122,7 +129,7 @@ class Products(db.Model):
             'IdProduct': self.IdProduct,
             'Name' : self.Name,
             'Description' : self.Description,
-            'Benefit' : self.Benefit,
+            # 'Benefit' : self.Benefit,
             'ImageUrl' : self.ImageUrl,
             'IdSize' : self.size.Size,
             'IdCategory' : self.cat.Category,
