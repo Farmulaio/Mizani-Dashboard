@@ -74,7 +74,7 @@ def delete_category(IdCategory):
 @category.route('/category/api', methods=['POST', 'GET'])
 def get_category_api():
     if request.method == "GET":
-        CategoryApi = db.session.query(Category).filter(Category.Enabled == 1).all()
+        CategoryApi = db.session.query(Categories).filter(Categories.Enabled == 1).all()
         print(CategoryApi)
         return jsonify(ProductType=[i.serialize for i in CategoryApi]), 200   
     else : 
