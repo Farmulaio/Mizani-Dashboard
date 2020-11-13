@@ -141,7 +141,19 @@ class Size(db.Model):
     situation = db.relationship('Situation', backref='Size')
 
     def __repr__(self) :
-        return f"Portion('{self.IdSize }','{self.Enabled }','{self.Size }','{self.CreatedAt}')"
+        return f"Size('{self.IdSize }','{self.Enabled }','{self.Size }','{self.CreatedAt}')"
+
+
+
+class Concerns(db.Model):
+    IdConcerns  = db.Column(db.Integer, primary_key=True)
+    Concerns   = db.Column(db.String(250), nullable=False)
+    Enabled = db.Column(db.Integer, db.ForeignKey('situation.IdSituation'))
+    CreatedAt  = db.Column(db.DateTime, nullable=False) 
+    situation = db.relationship('Situation', backref='Concerns')
+
+    def __repr__(self) :
+        return f"Concerns('{self.IdConcerns }','{self.Enabled }','{self.Concerns }','{self.CreatedAt}')"
 
 
 class Situation(db.Model):

@@ -29,6 +29,7 @@ def create_app(config_class=Config):
     from dashboard.category.routes import category
     from dashboard.collection.routes import collection
     from dashboard.producttype.routes import producttype
+    from dashboard.concerns.routes import concerns
     from dashboard.size.routes import size
     from dashboard.role.routes import role
     from dashboard.users.routes import users
@@ -41,6 +42,7 @@ def create_app(config_class=Config):
     app.register_blueprint(collection)
     app.register_blueprint(producttype)
     app.register_blueprint(size)
+    app.register_blueprint(concerns)
     app.register_blueprint(users)
     app.register_blueprint(status)
     app.register_blueprint(product)
