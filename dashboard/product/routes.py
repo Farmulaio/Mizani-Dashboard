@@ -7,8 +7,7 @@ from sqlalchemy import and_
 import random
 import string, os
 from dashboard import create_app
-from datetime import datetime
-
+import datetime
 
 product = Blueprint('product',__name__)
 
