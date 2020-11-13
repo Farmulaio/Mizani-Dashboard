@@ -23,7 +23,7 @@ def get_category():
 @login_required
 def add_category():
     if request.method == 'POST':
-        NewCategory = Categories(Category = request.form['CategoryName'], Enabled= request.form['Status'])
+        NewCategory = Categories(Category = request.form['CategoryName'], Enabled= request.form['Status'], CreatedAt = "")
         try :
             db.session.add(NewCategory)
             db.session.commit()
