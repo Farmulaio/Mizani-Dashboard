@@ -2,6 +2,8 @@ from flask_login import login_user, current_user, logout_user, login_required
 from dashboard.models import  Users,Situation, Products, Concerns
 from flask import abort, redirect, url_for, render_template, request, jsonify, flash, Markup, Blueprint
 from dashboard import db, bcrypt
+import datetime
+
 
 concerns = Blueprint('concerns',__name__)
 
@@ -25,7 +27,7 @@ def get_concerns():
 @login_required
 def add_concerns():
     if request.method == 'POST':
-        NewConcerns = Concerns(Concerns = request.form['Concerns'], Enabled = request.form['Status'])
+        NewConcerns = Concerns(Concerns = request.form['Concerns'], Enabled = request.form['Status'], CreatedAt = datetime.datetime.now())
         try :
             db.session.add(NewConcerns)
             db.session.commit()

@@ -2,6 +2,7 @@ from flask_login import login_user, current_user, logout_user, login_required
 from dashboard.models import  Users,Situation, Products, Size
 from flask import abort, redirect, url_for, render_template, request, jsonify, flash, Markup, Blueprint
 from dashboard import db, bcrypt
+import datetime
 
 size = Blueprint('size',__name__)
 
@@ -25,7 +26,7 @@ def get_size():
 @login_required
 def add_size():
     if request.method == 'POST':
-        NewSize = Size(Size = request.form['Size'], Enabled = request.form['Status'])
+        NewSize = Size(Size = request.form['Size'], Enabled = request.form['Status'], CreatedAt = datetime.datetime.now())
         try :
             db.session.add(NewSize)
             db.session.commit()

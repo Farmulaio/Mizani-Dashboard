@@ -2,6 +2,8 @@ from flask_login import login_user, current_user, logout_user, login_required
 from dashboard.models import  Users,Situation, Products, Categories, Collection
 from flask import abort, redirect, url_for, render_template, request, jsonify, flash, Markup, Blueprint
 from dashboard import db, bcrypt
+import datetime
+
 
 collection = Blueprint('collection',__name__)
 
@@ -23,7 +25,7 @@ def get_collection():
 @login_required
 def add_collection():
     if request.method == 'POST':
-        NewCollection = Collection(Collection = request.form['CollectionName'], Enabled= request.form['Status'])
+        NewCollection = Collection(Collection = request.form['CollectionName'], Enabled= request.form['Status'], CreatedAt = datetime.datetime.now())
         try :
             db.session.add(NewCollection)
             db.session.commit()

@@ -2,6 +2,7 @@ from flask_login import login_user, current_user, logout_user, login_required
 from dashboard.models import  Users,Situation
 from flask import abort, redirect, url_for, render_template, request, jsonify, flash, Markup, Blueprint
 from dashboard import db, bcrypt
+import datetime
 
 users = Blueprint('users',__name__)
 
@@ -23,7 +24,7 @@ def get_users():
 @login_required
 def add_users():
     if request.method == 'POST' :
-        NewUser = Users(FirstName = request.form['FirstName'], LastName = request.form['LastName'], Email = request.form['Email'], PhoneNumber = request.form['PhoneNumber'], Address = request.form['Address'], Pasword = bcrypt.generate_password_hash(request.form['Pasword']).decode('utf-8'), Enabled = request.form['Status'])
+        NewUser = Users(FirstName = request.form['FirstName'], LastName = request.form['LastName'], Email = request.form['Email'], PhoneNumber = request.form['PhoneNumber'], Address = request.form['Address'], Pasword = bcrypt.generate_password_hash(request.form['Pasword']).decode('utf-8'), Enabled = request.form['Status'], CreatedAt = datetime.datetime.now())
         try :
             db.session.add(NewUser)
             db.session.commit()

@@ -2,6 +2,7 @@ from flask_login import login_user, current_user, logout_user, login_required
 from dashboard.models import  Users,Situation
 from flask import abort, redirect, url_for, render_template, request, jsonify, flash, Markup, Blueprint
 from dashboard import db, bcrypt
+import datetime
 
 role = Blueprint('role',__name__)
 
@@ -27,7 +28,7 @@ def get_role():
 @login_required
 def add_role():
     if request.method == 'POST':
-        NewRole = Role(Role = request.form['RoleName'])
+        NewRole = Role(Role = request.form['RoleName'], CreatedAt = datetime.datetime.now())
         try :
             db.session.add(NewRole)
             db.session.commit()

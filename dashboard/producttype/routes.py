@@ -2,6 +2,7 @@ from flask_login import login_user, current_user, logout_user, login_required
 from dashboard.models import  Users,Situation, Products, Categories, ProductType
 from flask import abort, redirect, url_for, render_template, request, jsonify, flash, Markup, Blueprint
 from dashboard import db, bcrypt
+import datetime
 
 producttype = Blueprint('producttype',__name__)
 
@@ -23,7 +24,7 @@ def get_producttype():
 @login_required
 def add_producttype():
     if request.method == 'POST':
-        NewProductType = ProductType(ProductType = request.form['ProductTypeName'], Enabled= request.form['Status'])
+        NewProductType = ProductType(ProductType = request.form['ProductTypeName'], Enabled= request.form['Status'], CreatedAt = datetime.datetime.now())
         try :
             db.session.add(NewProductType)
             db.session.commit()
