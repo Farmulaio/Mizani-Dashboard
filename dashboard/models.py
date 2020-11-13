@@ -12,7 +12,7 @@ class Categories(db.Model):
     IdCategory = db.Column(db.Integer, primary_key=True)
     Category  = db.Column(db.String(250), nullable=False)
     Enabled = db.Column(db.Integer, db.ForeignKey('situation.IdSituation'))
-    CreatedAt = db.Column(db.DateTime, nullable=False) 
+    CreatedAt = db.Column(db.DateTime, nullable=True) 
     situation = db.relationship('Situation', backref='Categories')
 
 
@@ -47,7 +47,7 @@ class ProductType(db.Model):
     IdProductType = db.Column(db.Integer, primary_key=True)
     ProductType  = db.Column(db.String(250), nullable=False)
     Enabled = db.Column(db.Integer, db.ForeignKey('situation.IdSituation'))
-    CreatedAt = db.Column(db.DateTime, nullable=False) 
+    CreatedAt = db.Column(db.DateTime, nullable=True) 
     situation = db.relationship('Situation', backref='ProductType')
 
 
@@ -81,7 +81,7 @@ class Users(db.Model, UserMixin):
     PhoneNumber = db.Column(db.String(250), nullable=True)
     Address = db.Column(db.String(250), nullable=True)
     Pasword = db.Column(db.String(250), nullable=True)
-    CreatedAt = db.Column(db.DateTime, nullable=False) 
+    CreatedAt = db.Column(db.DateTime, nullable=True) 
     Enabled = db.Column(db.Integer, db.ForeignKey('situation.IdSituation'))
     situation = db.relationship('Situation', backref='Users')
 
@@ -126,7 +126,7 @@ class Products(db.Model):
     IdConcerns = db.Column(db.Integer, db.ForeignKey('concerns.IdConcerns'))
     Quantity  = db.Column(db.String(250), nullable=True)
     Price  = db.Column(db.String(250), nullable=True)
-    CreatedAt = db.Column(db.DateTime, nullable=False)
+    CreatedAt = db.Column(db.DateTime, nullable=True)
     size = db.relationship("Size", backref="Products")
     user = db.relationship('Users',  backref="Products")
     cat = db.relationship('Categories',  backref="Products")
@@ -166,7 +166,7 @@ class Size(db.Model):
     IdSize  = db.Column(db.Integer, primary_key=True)
     Size   = db.Column(db.String(250), nullable=False)
     Enabled = db.Column(db.Integer, db.ForeignKey('situation.IdSituation'))
-    CreatedAt  = db.Column(db.DateTime, nullable=False) 
+    CreatedAt  = db.Column(db.DateTime, nullable=True) 
     situation = db.relationship('Situation', backref='Size')
 
     def __repr__(self) :
@@ -178,7 +178,7 @@ class Concerns(db.Model):
     IdConcerns  = db.Column(db.Integer, primary_key=True)
     Concerns   = db.Column(db.String(250), nullable=False)
     Enabled = db.Column(db.Integer, db.ForeignKey('situation.IdSituation'))
-    CreatedAt  = db.Column(db.DateTime, nullable=False) 
+    CreatedAt  = db.Column(db.DateTime, nullable=True) 
     situation = db.relationship('Situation', backref='Concerns')
 
     def __repr__(self) :
@@ -199,7 +199,7 @@ class Concerns(db.Model):
 class Situation(db.Model):
     IdSituation = db.Column(db.Integer, primary_key=True)
     Situation  = db.Column(db.String(250), nullable=False)
-    CreatedAt  = db.Column(db.DateTime, nullable=False) 
+    CreatedAt  = db.Column(db.DateTime, nullable=True) 
 
     def __repr__(self) :
         return f"Situation('{self.IdSituation}','{self.Situation}','{self.CreatedAt}')"
