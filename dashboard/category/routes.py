@@ -62,9 +62,20 @@ def delete_category(IdCategory):
         try :
             db.session.delete(DeleteCategory)
             db.session.commit()
-            flash('Yes !! Category is deleted successfully '+ Happy , 'success')
+            flash('Yes !! category is deleted successfully '+ Happy , 'success')
             return redirect(url_for('category.get_category'))
         except Exception as err :
             flash('NA NA NA you can delete me. Try again ' + Sassy  , 'danger')
             print(err)
     return redirect(url_for('category.get_category'))
+
+
+# get all Category
+@category.route('/category/api', methods=['POST', 'GET'])
+def get_category_api():
+    if request.method == "GET":
+        CategoryApi = db.session.query(Category).filter(Category.Enabled == 1).all()
+        print(CategoryApi)
+        return jsonify(ProductType=[i.serialize for i in CategoryApi]), 200   
+    else : 
+        return jsonify({"result" : "failure", "error" : "400", "Bad Request" : "Use a GET request instead"}), 400

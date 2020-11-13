@@ -19,7 +19,15 @@ class Categories(db.Model):
     def __repr__(self) :
         return f"Categories('{self.IdCategory}','{self.Category },'{self.Enabled}','{self.CreatedAt}')"
 
-
+    @property
+    def serialize(self):
+       """Return object data in easily serializable format"""
+       return {
+            'IdCategory': self.IdCategory,
+            'Category' : self.Category,
+            'Enabled' : self.Enabled,
+            'CreatedAt' : self.CreatedAt
+       }
 
 class Collection(db.Model):
     IdCollection = db.Column(db.Integer, primary_key=True)
