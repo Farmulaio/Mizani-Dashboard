@@ -72,3 +72,14 @@ def delete_concerns(IdConcerns):
             flash('NA NA NA you can delete me. Try again ' + Sassy  , 'danger')
            
     return redirect(url_for('concerns.get_concerns'))
+
+
+# get all products
+@concerns.route('/concerns/api', methods=['POST', 'GET'])
+def get_concerns_api():
+    if request.method == "GET":
+        ConcernsApi = db.session.query(Concerns).filter(Concerns.Enabled == 1).all()
+        print(ConcernsApi)
+        return jsonify(Concerns=[i.serialize for i in ConcernsApi]), 200   
+    else : 
+        return jsonify({"result" : "failure", "error" : "400", "Bad Request" : "Use a GET request instead"}), 400

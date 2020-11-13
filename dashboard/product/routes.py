@@ -122,7 +122,7 @@ def delete_product(IdProduct):
     return redirect(url_for('product.get_product'))
 
 
-
+# get all products
 @product.route('/product/api', methods=['POST', 'GET'])
 def get_product_api():
     if request.method == "GET":
@@ -131,3 +131,38 @@ def get_product_api():
         return jsonify(Products=[i.serialize for i in ProductsApi]), 200   
     else : 
         return jsonify({"result" : "failure", "error" : "400", "Bad Request" : "Use a GET request instead"}), 400
+
+
+# get all products by Category
+@product.route('/product/<int:IdCategory>/category', methods=['POST', 'GET'])
+def get_product_by_category_api(IdCategory):
+    if request.method == "GET":
+        ProductsApi = db.session.query(Products).filter(Products.IdCategory == IdCategory).all()
+        print(ProductsApi)
+        return jsonify(Products=[i.serialize for i in ProductsApi]), 200   
+    else : 
+        return jsonify({"result" : "failure", "error" : "400", "Bad Request" : "Use a GET request instead"}), 400
+
+
+# get all products by collection
+@product.route('/product/<int:IdCollection>/collection', methods=['POST', 'GET'])
+def get_product_by_collection_api(IdCollection):
+    if request.method == "GET":
+        ProductsApi = db.session.query(Products).filter(Products.IdCollection == IdCollection).all()
+        print(ProductsApi)
+        return jsonify(Products=[i.serialize for i in ProductsApi]), 200   
+    else : 
+        return jsonify({"result" : "failure", "error" : "400", "Bad Request" : "Use a GET request instead"}), 400
+
+
+
+# get all products by concerns
+@product.route('/product/<int:IdConcerns>/concerns', methods=['POST', 'GET'])
+def get_product_by_concerns_api(IdConcerns):
+    if request.method == "GET":
+        ProductsApi = db.session.query(Products).filter(Products.IdConcerns == IdConcerns).all()
+        print(ProductsApi)
+        return jsonify(Products=[i.serialize for i in ProductsApi]), 200   
+    else : 
+        return jsonify({"result" : "failure", "error" : "400", "Bad Request" : "Use a GET request instead"}), 400
+

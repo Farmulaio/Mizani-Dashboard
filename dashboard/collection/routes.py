@@ -67,3 +67,14 @@ def delete_collection(IdCollection):
             flash('NA NA NA you can delete me. Try again ' + Sassy  , 'danger')
             print(err)
     return redirect(url_for('collection.get_collection'))
+
+
+# get all collection
+@collection.route('/collection/api', methods=['POST', 'GET'])
+def get_collection_api():
+    if request.method == "GET":
+        CollectionApi = db.session.query(Collection).filter(Collection.Enabled == 1).all()
+        print(CollectionApi)
+        return jsonify(Collection=[i.serialize for i in CollectionApi]), 200   
+    else : 
+        return jsonify({"result" : "failure", "error" : "400", "Bad Request" : "Use a GET request instead"}), 400

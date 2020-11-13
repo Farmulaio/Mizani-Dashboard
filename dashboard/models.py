@@ -32,6 +32,16 @@ class Collection(db.Model):
     def __repr__(self) :
         return f"Collection('{self.IdCollection}','{self.Collection },'{self.Enabled}','{self.CreatedAt}')"
 
+    @property
+    def serialize(self):
+       """Return object data in easily serializable format"""
+       return {
+            'IdCollection': self.IdCollection,
+            'Concerns' : self.Collection,
+            'Enabled' : self.Enabled,
+            'CreatedAt' : self.CreatedAt
+       }
+
 
 class ProductType(db.Model):
     IdProductType = db.Column(db.Integer, primary_key=True)
@@ -44,7 +54,15 @@ class ProductType(db.Model):
     def __repr__(self) :
         return f"ProductType('{self.IdProductType}','{self.ProductType },'{self.Enabled}','{self.CreatedAt}')"
 
-
+    @property
+    def serialize(self):
+       """Return object data in easily serializable format"""
+       return {
+            'IdProductType': self.IdProductType,
+            'ProductType' : self.ProductType,
+            'Enabled' : self.Enabled,
+            'CreatedAt' : self.CreatedAt
+       }
 
 
 class Role(db.Model):
@@ -131,8 +149,12 @@ class Products(db.Model):
             'Description' : self.Description,
             # 'Benefit' : self.Benefit,
             'ImageUrl' : self.ImageUrl,
-            'IdSize' : self.size.Size,
-            'IdCategory' : self.cat.Category,
+            'Size' : self.size.Size,
+            'Category' : self.cat.Category,
+            'Collection' : self.coll.Collection,
+            'ProductType' : self.protype.ProductType,
+            'Concerns' : self.con.Concerns,
+            'Quantity' : self.Quantity,
             'Enabled' : self.Enabled,
             'Price' : self.Price,
             'CreatedAt' : self.CreatedAt
@@ -161,6 +183,17 @@ class Concerns(db.Model):
 
     def __repr__(self) :
         return f"Concerns('{self.IdConcerns }','{self.Enabled }','{self.Concerns }','{self.CreatedAt}')"
+
+    @property
+    def serialize(self):
+       """Return object data in easily serializable format"""
+       return {
+            'IdConcerns': self.IdConcerns,
+            'Concerns' : self.Concerns,
+            'Enabled' : self.Enabled,
+            'CreatedAt' : self.CreatedAt
+       }
+
 
 
 class Situation(db.Model):

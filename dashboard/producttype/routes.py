@@ -67,3 +67,14 @@ def delete_producttype(IdProductType):
             flash('NA NA NA you can delete me. Try again ' + Sassy  , 'danger')
             print(err)
     return redirect(url_for('producttype.get_producttype'))
+
+
+# get all collection
+@producttype.route('/producttype/api', methods=['POST', 'GET'])
+def get_producttype_api():
+    if request.method == "GET":
+        ProductTypeApi = db.session.query(ProductType).filter(ProductType.Enabled == 1).all()
+        print(ProductTypeApi)
+        return jsonify(ProductType=[i.serialize for i in ProductTypeApi]), 200   
+    else : 
+        return jsonify({"result" : "failure", "error" : "400", "Bad Request" : "Use a GET request instead"}), 400
