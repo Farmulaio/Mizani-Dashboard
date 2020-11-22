@@ -165,3 +165,14 @@ def get_product_by_concerns_api(IdConcerns):
     else : 
         return jsonify({"result" : "failure", "error" : "400", "Bad Request" : "Use a GET request instead"}), 400
 
+
+
+# get all products by product type
+@product.route('/product/<int:IdProductType>/ProductType', methods=['POST', 'GET'])
+def get_product_by_product_type_api(IdProductType):
+    if request.method == "GET":
+        ProductsApi = db.session.query(Products).filter(Products.IdProductType == IdProductType).all()
+        print(ProductsApi)
+        return jsonify(Products=[i.serialize for i in ProductsApi]), 200   
+    else : 
+        return jsonify({"result" : "failure", "error" : "400", "Bad Request" : "Use a GET request instead"}), 400
