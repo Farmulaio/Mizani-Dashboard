@@ -132,7 +132,7 @@ class Products(db.Model):
     IdCollection = db.Column(db.Integer, db.ForeignKey('collection.IdCollection'))
     IdProductType = db.Column(db.Integer, db.ForeignKey('product_type.IdProductType'))
     IdConcerns = db.Column(db.Integer, db.ForeignKey('concerns.IdConcerns'))
-    Quantity  = db.Column(db.String(250), nullable=True)
+    # Quantity  = db.Column(db.String(250), nullable=True)
     Price  = db.Column(db.String(250), nullable=True)
     CreatedAt = db.Column(db.DateTime, nullable=True)
     size = db.relationship("Size", backref="Products")
@@ -146,7 +146,7 @@ class Products(db.Model):
 
 
     def __repr__(self) :
-        return f"Products('{self.IdProduct}',{self.Name}','{self.Description}','{self.ImageUrl}','{self.IdSize}','{self.Enabled}','{self.IdUser}','{self.IdCategory}','{self.IdCollection}','{self.IdProductType}','{self.IdConcerns}','{self.Quantity}','{self.Price}','{self.CreatedAt}')"        
+        return f"Products('{self.IdProduct}',{self.Name}','{self.Description}','{self.ImageUrl}','{self.IdSize}','{self.Enabled}','{self.IdUser}','{self.IdCategory}','{self.IdCollection}','{self.IdProductType}','{self.IdConcerns}','{self.Price}','{self.CreatedAt}')"        
     
     @property
     def serialize(self):
@@ -157,12 +157,12 @@ class Products(db.Model):
             'Description' : self.Description,
             # 'Benefit' : self.Benefit,
             'ImageUrl' : self.ImageUrl,
-            'Size' : self.size.Size,
+            # 'Size' : self.size.Size,
             'Category' : self.cat.Category,
             'Collection' : self.coll.Collection,
             'ProductType' : self.protype.ProductType,
             'Concerns' : self.con.Concerns,
-            'Quantity' : self.Quantity,
+            'Quantity' : self.size.Size,
             'Enabled' : self.Enabled,
             'Price' : self.Price,
             'CreatedAt' : self.CreatedAt
