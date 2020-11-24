@@ -15,7 +15,7 @@
   <div class="card shadow mb-4">
     <div class="card-header py-3">
       <a href="#" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm" data-toggle="modal"
-        data-target="#insertModal"><i class="fas fa-plus fa-sm text-white-50"></i> Add Size</a>
+        data-target="#insertModal"><i class="fas fa-plus fa-sm text-white-50"></i> Add Quantity</a>
     </div>
     <div class="card-body">
       <div class="table-responsive">
@@ -23,7 +23,7 @@
           <thead>
             <tr>
               <th>Id</th>
-              <th>Size</th>
+              <th>Quantity</th>
               <th>Status</th>
               <th>CreatedAt</th>
               <th>Action</th>
@@ -62,7 +62,7 @@
               <div class="modal-dialog" role="document">
                 <div class="modal-content">
                   <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLabel">Edit Size</h5>
+                    <h5 class="modal-title" id="exampleModalLabel">Edit Quantity</h5>
                     <button class="close" type="button" data-dismiss="modal" aria-label="Close">
                       <span aria-hidden="true">×</span>
                     </button>
@@ -71,7 +71,7 @@
                     <form action="{{url_for('size.edit_size', IdSize = item.IdSize )}}" method="POST">
                       <div class="row">
                         <div class="col">
-                          <label for="exampleFormControlSelect1">Insert Size :</label>
+                          <label for="exampleFormControlSelect1">Insert Quantity :</label>
                           <input type="text" class="form-control" value="{{ item.Size }}"
                             name="Size">
                         </div>
@@ -101,7 +101,7 @@
               <div class="modal-dialog" role="document">
                 <div class="modal-content">
                   <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLabel">Delete Size</h5>
+                    <h5 class="modal-title" id="exampleModalLabel">Delete Quantity</h5>
                     <button class="close" type="button" data-dismiss="modal" aria-label="Close">
                       <span aria-hidden="true">×</span>
                     </button>
@@ -144,7 +144,7 @@
   <div class="modal-dialog" role="document">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title" id="exampleModalLabel">Insert Size</h5>
+        <h5 class="modal-title" id="exampleModalLabel">Insert Quantity</h5>
         <button class="close" type="button" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">×</span>
         </button>
@@ -153,8 +153,8 @@
         <form action="{{url_for('size.add_size')}}" method="POST">
           <div class="row">
             <div class="col">
-              <label for="exampleFormControlSelect1">Insert Size :</label>
-              <input type="text" class="form-control" placeholder="Size" name="Size">
+              <label for="exampleFormControlSelect1">Insert Quantity :</label>
+              <input type="text" class="form-control" placeholder="Quantity" name="Size">
             </div>
             <div class="col">
               <label for="exampleFormControlSelect1">Choose status :</label>
