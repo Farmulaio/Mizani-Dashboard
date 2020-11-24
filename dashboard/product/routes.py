@@ -59,8 +59,8 @@ def add_product():
 @login_required
 def edit_product(IdProduct):
     if request.method == 'POST':
-        file = request.files['ImageUrl']
-        file.save(os.path.join(app.config['UPLOAD_FOLDER'] , file.filename))
+        # file = request.files['ImageUrl']
+        # file.save(os.path.join(app.config['UPLOAD_FOLDER'] , file.filename))
         
         EditProduct = db.session.query(Products).filter_by(IdProduct = IdProduct).one()
         EditProduct.Name = request.form['ProductName']
@@ -72,7 +72,7 @@ def edit_product(IdProduct):
         EditProduct.Enabled  = request.form['Status']
         EditProduct.Price  = request.form['Price']
         EditProduct.IdSize  = request.form['Size']
-        EditProduct.ImageUrl  =  "https://mizani.farmula.io/static/img/" + file.filename
+        # EditProduct.ImageUrl  =  "https://mizani.farmula.io/static/img/" + file.filename
         try :
             db.session.add(EditProduct)
             db.session.commit()
