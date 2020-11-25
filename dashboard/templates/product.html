@@ -101,6 +101,7 @@
                       <div class="form-group">
                         <label for="exampleFormControlSelect1">Choose Product Collection :</label>
                         <select class="form-control" id="exampleFormControlSelect1" name="Collection">
+                          <option value="{{ item.IdCollection }}" selected>{{ item.coll.Collection }}</option>
                           {% for Collection in CollectiomItems %}
                           <option value="{{ Collection.IdCollection }}">{{ Collection.Collection }}</option>
                           {% endfor %}
@@ -109,6 +110,7 @@
                       <div class="form-group">
                         <label for="exampleFormControlSelect1">Choose Product Type :</label>
                         <select class="form-control" id="exampleFormControlSelect1" name="ProductType">
+                          <option value="{{ item.IdProductType }}" selected>{{ item.protype.ProductType}}</option>
                           {% for Type in ProductTypeItems %}
                           <option value="{{ Type.IdProductType }}">{{ Type.ProductType }}</option>
                           {% endfor %}
@@ -117,6 +119,7 @@
                       <div class="form-group">
                         <label for="exampleFormControlSelect1">Choose Product Concerns :</label>
                         <select class="form-control" id="exampleFormControlSelect1" name="Concerns">
+                          <option value="{{ item.IdConcerns }}" selected>{{ item.con.Concerns }}</option>
                           {% for Concerns in ConcernsItems %}
                           <option value="{{ Concerns.IdConcerns }}">{{ Concerns.Concerns }}</option>
                           {% endfor %}
@@ -125,6 +128,7 @@
                       <div class="form-group">
                         <label for="exampleFormControlSelect1">Choose Product Quantity :</label>
                         <select class="form-control" id="exampleFormControlSelect1" name="Size">
+                          <option value="{{ item.IdSize }}" selected>{{ item.size.Size }}</option>
                           {% for Size in SizeItems %}
                           <option value="{{ Size.IdSize }}">{{ Size.Size }}</option>
                           {% endfor %}
