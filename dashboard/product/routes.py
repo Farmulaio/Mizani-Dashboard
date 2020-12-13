@@ -63,6 +63,11 @@ def edit_product(IdProduct):
         # file.save(os.path.join(app.config['UPLOAD_FOLDER'] , file.filename))
         
         EditProduct = db.session.query(Products).filter_by(IdProduct = IdProduct).one()
+        file = request.files['ImageUrl']
+        if file :
+            EditProduct.ImageUrl  =  "https://mizani.farmula.io/static/img/" + file.filename
+        else :
+            EditProduct.ImageUrl = EditProduct.ImageUrl
         EditProduct.Name = request.form['ProductName']
         EditProduct.Description  = request.form['Description']
         EditProduct.IdCategory = request.form['Category']
