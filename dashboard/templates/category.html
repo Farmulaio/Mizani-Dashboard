@@ -147,11 +147,11 @@
           <div class="row">
             <div class="col">
               <label for="exampleFormControlSelect1">Insert Category :</label>
-              <input type="text" class="form-control" placeholder="Category name" name="CategoryName">
+              <input type="text" class="form-control" placeholder="Category name" name="CategoryName" required>
             </div>
             <div class="col">
               <label for="exampleFormControlSelect1">Choose status :</label>
-              <select id="inputState" class="form-control" name="Status">
+              <select id="inputState" class="form-control" name="Status" required>
                 <option selected>Choose...</option>
                 {% for item in SituationItems %}
                 <option value="{{ item.IdSituation }}">{{ item.Situation }}</option>
