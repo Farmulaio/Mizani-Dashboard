@@ -29,10 +29,10 @@ def get_product():
     CategoriesItems = db.session.query(Categories).all()
     CollectiomItems = db.session.query(Collection).all()
     ConcernsItems  = db.session.query(Concerns).all()
-    ProductTypeItems = db.session.query(ProductType).all()
+    # ProductTypeItems = db.session.query(ProductType).all()
     SizeItems = db.session.query(Size).all()
  
-    return render_template('product.html', ProductsItems = ProductsItems, SituationItems = SituationItems, CategoriesItems = CategoriesItems, SizeItems = SizeItems, CollectiomItems = CollectiomItems, ConcernsItems = ConcernsItems, ProductTypeItems = ProductTypeItems)
+    return render_template('product.html', ProductsItems = ProductsItems, SituationItems = SituationItems, CategoriesItems = CategoriesItems, SizeItems = SizeItems, CollectiomItems = CollectiomItems, ConcernsItems = ConcernsItems)
 
 # add new Product
 @product.route('/product/new', methods=['POST', 'GET'])
@@ -41,7 +41,7 @@ def add_product():
     if request.method == 'POST':
         file = request.files['ImageUrl']
         file.save(os.path.join(app.config['UPLOAD_FOLDER'] , file.filename))
-        NewProduct = Products(Name = request.form['ProductName'], Description = request.form['Description'], Enabled = request.form['Status'], Price = request.form['Price'], IdCategory = request.form['Category'], IdCollection = request.form['Collection'], IdProductType = request.form['ProductType'], IdConcerns = request.form['Concerns'], IdSize = request.form['Size'], IdUser = current_user.IdUser, ImageUrl = "https://mizani.farmula.io/static/img/" + file.filename, CreatedAt = datetime.datetime.now())
+        NewProduct = Products(Name = request.form['ProductName'], Description = request.form['Description'], Enabled = request.form['Status'], Price = request.form['Price'], IdCategory = request.form['Category'], IdCollection = request.form['Collection'], IdConcerns = request.form['Concerns'], IdSize = request.form['Size'], IdUser = current_user.IdUser, ImageUrl = "https://mizani.farmula.io/static/img/" + file.filename, CreatedAt = datetime.datetime.now())
         try :
             db.session.add(NewProduct)
             db.session.commit()
@@ -72,7 +72,6 @@ def edit_product(IdProduct):
         EditProduct.Description  = request.form['Description']
         EditProduct.IdCategory = request.form['Category']
         EditProduct.IdCollection = request.form['Collection']
-        EditProduct.IdProductType = request.form['ProductType']
         EditProduct.IdConcerns = request.form['Concerns']
         EditProduct.Enabled  = request.form['Status']
         EditProduct.Price  = request.form['Price']

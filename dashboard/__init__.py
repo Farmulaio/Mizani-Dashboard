@@ -6,6 +6,13 @@ from dashboard.config import Config
 from flask_googlemaps import GoogleMaps
 from flask_wkhtmltopdf import Wkhtmltopdf
 import os
+import pymysql
+
+
+db_user = 'ahmedone'
+db_password = 'ahmed@12345'
+db_name = 'demo'
+db_connection_name = 'tutorialone-302418:us-central1:tutone'
 
 db = SQLAlchemy()
 bcrypt = Bcrypt()
@@ -21,8 +28,10 @@ def create_app(config_class=Config):
             template_folder='templates')
     app.config.from_object(Config)
     app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
-
     db.init_app(app)
+    unix_socket = '/cloudsql/{}'.format(db_connection_name)
+#     db = pymysql.connect(user=db_user, password=db_password,
+#                               unix_socket=unix_socket, db=db_name)
     bcrypt.init_app(app)
     login_manager.init_app(app)
 
