@@ -142,7 +142,6 @@ class Products(db.Model):
     situation = db.relationship('Situation', backref='Products')
 
 
-
     def __repr__(self) :
         return f"Products('{self.IdProduct}',{self.Name}','{self.Description}','{self.ImageUrl}','{self.IdSize}','{self.Enabled}','{self.IdUser}','{self.IdCategory}','{self.IdCollection}','{self.IdConcerns}','{self.Price}','{self.CreatedAt}')"        
     
