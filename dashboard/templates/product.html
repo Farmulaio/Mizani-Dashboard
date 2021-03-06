@@ -31,7 +31,7 @@
               <th>Description</th>
               <th>Collection</th>
               <th>Concerns</th>
-              <!-- <th>Size</th> -->
+              <th>Product Type</th>
               <th>Qty</th>
               <th>Price</th>
               <th>Action</th>
@@ -55,6 +55,7 @@
               <td> {{ item.Description|truncate(100)   }} </td>
               <td> {{ item.coll.Collection }} </td>
               <td> {{ item.con.Concerns }} </td>
+              <td> {{ item.prodtype.ProductType }} </td>
               <td> {{ item.size.Size }} </td>
               <!-- <td>{{ item.Quantity }}</td> -->
               <td>KES {{ item.Price }}</td>
@@ -113,6 +114,14 @@
                           <option value="{{ item.IdConcerns }}" selected>{{ item.con.Concerns }}</option>
                           {% for Concerns in ConcernsItems %}
                           <option value="{{ Concerns.IdConcerns }}">{{ Concerns.Concerns }}</option>
+                          {% endfor %}
+                        </select>
+                      </div>
+                      <div class="form-group">
+                        <label for="exampleFormControlSelect1">Choose Product Type :</label>
+                        <select class="form-control" id="exampleFormControlSelect1" name="ProductType">
+                          {% for prodtype in ProductTypeItems %}
+                          <option value="{{ prodtype.IdProductType }}">{{ prodtype.ProductType }}</option>
                           {% endfor %}
                         </select>
                       </div>
@@ -287,6 +296,14 @@
             <select class="form-control" id="exampleFormControlSelect1" name="Concerns">
               {% for Concerns in ConcernsItems %}
               <option value="{{ Concerns.IdConcerns }}">{{ Concerns.Concerns }}</option>
+              {% endfor %}
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="exampleFormControlSelect1">Choose Product Type :</label>
+            <select class="form-control" id="exampleFormControlSelect1" name="ProductType">
+              {% for prodtype in ProductTypeItems %}
+              <option value="{{ prodtype.IdProductType }}">{{ prodtype.ProductType }}</option>
               {% endfor %}
             </select>
           </div>
