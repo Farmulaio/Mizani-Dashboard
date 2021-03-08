@@ -40,8 +40,9 @@ def get_product():
 def add_product():
     if request.method == 'POST':
         file = request.files['ImageUrl']
-        file.save(os.path.join(app.config['UPLOAD_FOLDER'] , file.filename))
-        NewProduct = Products(Name = request.form['ProductName'], Description = request.form['Description'], Enabled = request.form['Status'], Price = request.form['Price'], IdCategory = request.form['Category'], IdCollection = request.form['Collection'], IdProductType = request.form['ProductType'] ,IdConcerns = request.form['Concerns'], IdSize = request.form['Size'], IdUser = current_user.IdUser, ImageUrl = "https://mizani.farmula.io/static/img/" + file.filename, CreatedAt = datetime.datetime.now())
+        print(file.filename.replace(" ", ""))
+        file.save(os.path.join(app.config['UPLOAD_FOLDER'] , file.filename.replace(" ", "")))
+        NewProduct = Products(Name = request.form['ProductName'], Description = request.form['Description'], Enabled = request.form['Status'], Price = request.form['Price'], IdCategory = request.form['Category'], IdCollection = request.form['Collection'], IdProductType = request.form['ProductType'] ,IdConcerns = request.form['Concerns'], IdSize = request.form['Size'], IdUser = current_user.IdUser, ImageUrl = "https://mizani.farmula.io/static/img/" + file.filename.replace(" ", ""), CreatedAt = datetime.datetime.now())
         try :
             db.session.add(NewProduct)
             db.session.commit()
@@ -129,8 +130,11 @@ def delete_product(IdProduct):
 @product.route('/product/api', methods=['POST', 'GET'])
 def get_product_api():
     if request.method == "GET":
-        ProductsApi = db.session.query(Products).filter(Products.Enabled == 1).all()
-        print(ProductsApi)
+        try :
+            ProductsApi = db.session.query(Products).filter(Products.Enabled == 1).all()
+        except  Exception as err :
+            print(err)
+        # print(ProductsApi)
         return jsonify(Products=[i.serialize for i in ProductsApi]), 200   
     else : 
         return jsonify({"result" : "failure", "error" : "400", "Bad Request" : "Use a GET request instead"}), 400
