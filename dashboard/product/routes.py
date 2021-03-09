@@ -8,6 +8,7 @@ import random
 import string, os
 from dashboard import create_app
 import datetime
+from werkzeug.utils import secure_filename
 
 product = Blueprint('product',__name__)
 
@@ -40,9 +41,8 @@ def get_product():
 def add_product():
     if request.method == 'POST':
         file = request.files['ImageUrl']
-        print(file.filename.replace(" ", ""))
-        file.save(os.path.join(app.config['UPLOAD_FOLDER'] , file.filename.replace(" ", "")))
-        NewProduct = Products(Name = request.form['ProductName'], Description = request.form['Description'], Enabled = request.form['Status'], Price = request.form['Price'], IdCategory = request.form['Category'], IdCollection = request.form['Collection'], IdProductType = request.form['ProductType'] ,IdConcerns = request.form['Concerns'], IdSize = request.form['Size'], IdUser = current_user.IdUser, ImageUrl = "https://mizani.farmula.io/static/img/" + file.filename.replace(" ", ""), CreatedAt = datetime.datetime.now())
+        file.save(os.path.join(app.config['UPLOAD_FOLDER'] , secure_filename(file.filename)))
+        NewProduct = Products(Name = request.form['ProductName'], Description = request.form['Description'], Enabled = request.form['Status'], Price = request.form['Price'], IdCategory = request.form['Category'], IdCollection = request.form['Collection'], IdProductType = request.form['ProductType'] ,IdConcerns = request.form['Concerns'], IdSize = request.form['Size'], IdUser = current_user.IdUser, ImageUrl = "https://mizani.farmula.io/static/img/" + secure_filename(file.filename), CreatedAt = datetime.datetime.now())
         try :
             db.session.add(NewProduct)
             db.session.commit()
@@ -60,13 +60,11 @@ def add_product():
 @login_required
 def edit_product(IdProduct):
     if request.method == 'POST':
-        # file = request.files['ImageUrl']
-        # file.save(os.path.join(app.config['UPLOAD_FOLDER'] , file.filename))
-        
         EditProduct = db.session.query(Products).filter_by(IdProduct = IdProduct).one()
         file = request.files['ImageUrl']
         if file :
-            EditProduct.ImageUrl  =  "https://mizani.farmula.io/static/img/" + file.filename
+            file.save(os.path.join(app.config['UPLOAD_FOLDER'] , secure_filename(file.filename)))
+            EditProduct.ImageUrl  =  "https://mizani.farmula.io/static/img/" + secure_filename(file.filename)
         else :
             EditProduct.ImageUrl = EditProduct.ImageUrl
         EditProduct.Name = request.form['ProductName']
